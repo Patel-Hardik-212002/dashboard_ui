@@ -1,4 +1,6 @@
+import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class TossResult extends StatefulWidget {
   const TossResult({Key? key}) : super(key: key);
@@ -8,46 +10,68 @@ class TossResult extends StatefulWidget {
 }
 
 class _TossResultState extends State<TossResult> {
+  TossController tossController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
+    return  Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          toolbarHeight: 100,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: (){
+              tossController.isViewVisible.value=false;
+            },
+            icon: const Icon(Icons.arrow_back,color: Colors.black,),
+          ),
+        ),
+        body: ListView(
+          shrinkWrap: true,
           children: [
-            Container(
-              color: Colors.black,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(child: Text("USER NAME".toUpperCase(),style: TextStyle(color: Colors.white),)),
-                  HDivier(),
-                  Expanded(child: Text("SELECTED DIGIT NUMBER".toUpperCase(),style: TextStyle(color: Colors.white),)),
-                  HDivier(),
+            DataTable(
+                headingTextStyle: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    letterSpacing: 2.0),
+                columns:  <DataColumn>[
+                  DataColumn(
+                    label: Text(
+                      'No'.toUpperCase(),
 
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Name'.toUpperCase(),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Selected team'.toUpperCase(),
+                    ),
+                  ),
                 ],
-              ),
-            ),
-            ListView.builder(
-                itemCount: 20,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-
-                      Text("nens".toUpperCase()),
-                      SizedBox(
-                        width: 650,
-                      ),
-                      Text("9".toUpperCase()),
-                      SizedBox(
-                        width: 286,
-                      ),
+                rows: List<DataRow>.generate(
+                    tossController.arrOfTossContest[tossController.selectedContest]
+                        .joinList!.length, (index) {
+                  return DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text((index + 1).toString())),
+                      DataCell(Text(tossController
+                          .arrOfTossContest[tossController.selectedContest]
+                          .joinList![index]
+                          .name ??
+                          "-")),
+                      DataCell(Text(tossController
+                          .arrOfTossContest[tossController.selectedContest]
+                          .joinList![index]
+                          .selectedTossResult ??
+                          "-")),
                     ],
                   );
-                })
+                }))
           ],
-        )
-    );
+        ));
   }
   Widget HDivier(){
     return Container(

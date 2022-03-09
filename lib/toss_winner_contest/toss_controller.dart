@@ -10,14 +10,17 @@ import '../utils.dart';
 
 class TossController extends GetxController {
 
-  bool isAddVisible = false;
-  bool isUpdateVisible = false;
-  bool isViewVisible =false;
+  RxBool isAddVisible = false.obs;
+  RxBool isUpdateVisible = false.obs;
+  RxBool isViewVisible =false.obs;
+  RxBool isLoading =false.obs;
+
 
 
   RxList<ModelToss> arrOfTossContest = <ModelToss>[].obs;
+  int selectedContest=-1;
 
-  ModelToss? model_toss;
+  ModelToss? modelToss;
 
 
   Future<void> getAllTossContest() async {
@@ -79,7 +82,7 @@ class TossController extends GetxController {
       Uri.parse(
           'https://codinghouse.in/battingraja/toss/updatetosscontest'),
       body: {
-        'toss_winner_contest_id': model_toss!.tossWinnerContestId.toString(),
+        'toss_winner_contest_id': modelToss!.tossWinnerContestId.toString(),
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,

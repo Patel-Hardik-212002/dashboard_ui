@@ -15,7 +15,6 @@ import '../utils.dart';
 import 'create_toss_contest.dart';
 
 class TossWinnerContest extends StatefulWidget {
-
   const TossWinnerContest({Key? key}) : super(key: key);
 
   @override
@@ -23,126 +22,280 @@ class TossWinnerContest extends StatefulWidget {
 }
 
 class _TossWinnerContestState extends State<TossWinnerContest> {
-  
+  TossController tossController = Get.find();
 
-  TossController tossController=Get.find();
   @override
   void initState() {
     super.initState();
-    tossController.isAddVisible=false;
-    tossController.isUpdateVisible=false;
-    tossController.isViewVisible=false;
+    tossController.isAddVisible.value = false;
+    tossController.isUpdateVisible.value = false;
+    tossController.isViewVisible.value = false;
     tossController.getAllTossContest();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white30,
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: tossController.isAddVisible
-            ? const CreateTossContest()
-            : tossController.isUpdateVisible
-            ? const UpdateTossContest(): tossController.isViewVisible?TossResult()
-            : Obx(()=>GridView.count(
-          crossAxisCount: 4,
-          childAspectRatio: 2 / 0.9,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          children: List.generate(tossController.arrOfTossContest.length, (index) {
-            return Container(
-              padding: const EdgeInsets.all(8),
-              // margin: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black12, width: 1),
-                borderRadius: BorderRadius.circular(8),
+      body: Obx(() =>
+        Padding(
+            padding: const EdgeInsets.all(0),
+            child: tossController.isAddVisible.value
+                ? const CreateTossContest()
+                : tossController.isUpdateVisible.value
+                    ? const UpdateTossContest()
+                    : tossController.isViewVisible.value
+                        ? TossResult()
+                : ListView(
+              children: [
+              Container(
+              height: 100,
+              width: Get.width,
+              color: Colors.white,
+            ),
+              DataTable(
+                                      headingTextStyle: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          letterSpacing: 2.0),
+                                      columnSpacing: 32,
+                                      columns: [
+                                        DataColumn(
+                                            label: Text("No".toUpperCase())),
+                                        DataColumn(
+                                            label: Text("Match".toUpperCase())),
+                                        DataColumn(
+                                            label: Text(
+                                                "Match Type".toUpperCase())),
+                                        DataColumn(
+                                            label: Text(
+                                                "Contest Name".toUpperCase())),
+                                        DataColumn(
+                                            label: Text(
+                                                "Entry Fee".toUpperCase())),
+                                        DataColumn(
+                                            label: Text("Winning Amount"
+                                                .toUpperCase())),
+                                        DataColumn(
+                                            label: Text(
+                                                "No Of Join".toUpperCase())),
+                                        DataColumn(
+                                            label: Text("Available Slot"
+                                                .toUpperCase())),
+                                        DataColumn(
+                                            label:
+                                                Text("Status".toUpperCase())),
+                                        DataColumn(
+                                            label:
+                                                Text("Action".toUpperCase())),
+                                      ],
+                                      rows: List<DataRow>.generate(
+                                          tossController.arrOfTossContest
+                                              .length, (index) {
+                                        return DataRow(cells: [
+                                          DataCell(
+                                              Text((index + 1).toString())),
+                                          DataCell(Text((tossController
+                                                      .arrOfTossContest[index]
+                                                      .team1
+                                                      .toString()
+                                                      .toUpperCase() +
+                                                  " v/s " +
+                                                  tossController
+                                                      .arrOfTossContest[index]
+                                                      .team2
+                                                      .toString())
+                                              .toString()
+                                              .toUpperCase())),
+                                          DataCell(Text((tossController
+                                                          .arrOfTossContest[
+                                                              index]
+                                                          .matchType ==
+                                                      "1"
+                                                  ? "T20"
+                                                  : tossController
+                                                              .arrOfTossContest[
+                                                                  index]
+                                                              .matchType ==
+                                                          "2"
+                                                      ? "ODI"
+                                                      : tossController
+                                                                  .arrOfTossContest[
+                                                                      index]
+                                                                  .matchType ==
+                                                              "3"
+                                                          ? "T10"
+                                                          : "TEST")
+                                              .toString())),
+                                          DataCell(Text((tossController
+                                                  .arrOfTossContest[index]
+                                                  .contestName)
+                                              .toString())),
+                                          DataCell(Text((tossController
+                                                  .arrOfTossContest[index]
+                                                  .entryFee)
+                                              .toString())),
+                                          DataCell(Text((tossController
+                                                  .arrOfTossContest[index]
+                                                  .winingAmount)
+                                              .toString())),
+                                          DataCell(Text((tossController
+                                                  .arrOfTossContest[index]
+                                                  .joinList!
+                                                  .length
+                                                  .toString())
+                                              .toString())),
+                                          DataCell(Text((10 -
+                                                  int.parse(tossController
+                                                      .arrOfTossContest[index]
+                                                      .joinList!
+                                                      .length
+                                                      .toString()))
+                                              .toString())),
+                                          DataCell(Text(
+                                            (tossController
+                                                            .arrOfTossContest[
+                                                                index]
+                                                            .tossResult ==
+                                                        null
+                                                    ? "Upcoming"
+                                                    : tossController
+                                                                .arrOfTossContest[
+                                                                    index]
+                                                                .tossResult ==
+                                                            "0"
+                                                        ? "Upcoming"
+                                                        : "Completed")
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                color: tossController
+                                                            .arrOfTossContest[
+                                                                index]
+                                                            .tossResult ==
+                                                        null
+                                                    ? Colors.green
+                                                    : tossController
+                                                                .arrOfTossContest[
+                                                                    index]
+                                                                .tossResult ==
+                                                            "0"
+                                                        ? Colors.green
+                                                        : Colors.red),
+                                          )),
+                                          DataCell(Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () async {
+                                                    tossController
+                                                        .isUpdateVisible
+                                                        .value = true;
+                                                    tossController.modelToss =
+                                                        tossController
+                                                                .arrOfTossContest[
+                                                            index];
+                                                    setState(() {});
+                                                  },
+                                                  icon: const Icon(Icons.edit)),
+                                              IconButton(
+                                                  onPressed: () async {
+                                                    showConfirmDelete(
+                                                        context, index);
+                                                  },
+                                                  icon:
+                                                      const Icon(Icons.delete)),
+                                              IconButton(
+                                                  onPressed: () async {
+                                                    tossController.isViewVisible
+                                                        .value = true;
+                                                    tossController
+                                                            .selectedContest =
+                                                        index;
+                                                    setState(() {});
+                                                  },
+                                                  icon: const Icon(
+                                                      Icons.remove_red_eye))
+                                            ],
+                                          )),
+                                        ]);
+                                      })
+                                      // children: [
+                                      //   Text("Match: " + tossController.arrOfTossContest[index].team1!+" v/s "+tossController.arrOfTossContest[index].team2!,
+                                      //       style: TextStyle(fontSize: 12),
+                                      //       textAlign: (TextAlign.start)),
+                                      //   Text("Match Type:" + tossController.arrOfTossContest[index].matchType!,
+                                      //       style: TextStyle(fontSize: 12),
+                                      //       textAlign: (TextAlign.start)),
+                                      //   Text("User Name:" + tossController.arrOfTossContest[index].userId!,
+                                      //       style: TextStyle(fontSize: 12),
+                                      //       textAlign: (TextAlign.start)),
+                                      //   Text("Entry Fees:" + tossController.arrOfTossContest[index].entryFee!,
+                                      //       style: TextStyle(fontSize: 12),
+                                      //       textAlign: (TextAlign.start)),
+                                      //   Text("Winning Amount:" + tossController.arrOfTossContest[index].winingAmount!,
+                                      //       style: TextStyle(fontSize: 12),
+                                      //       textAlign: (TextAlign.start)),
+                                      //   Row(
+                                      //     mainAxisAlignment: MainAxisAlignment.end,
+                                      //     children: [
+                                      //       IconButton(
+                                      //           onPressed: () async {
+                                      //             tossController.isUpdateVisible=true;
+                                      //             tossController.model_toss=tossController.arrOfTossContest[index];
+                                      //             setState(() {
+                                      //
+                                      //             });
+                                      //
+                                      //           },
+                                      //           icon: const Icon(Icons.edit)),
+                                      //       IconButton(
+                                      //           onPressed: () async {
+                                      //             // int result = await deleteContest(
+                                      //             //     tossController.arrOfTossContest[index].lastDigitContestId!);
+                                      //             // if (result == 1) {
+                                      //             //   tossController.getAllLDC();
+                                      //             // }
+                                      //             showConfirmDelete(context,index);
+                                      //
+                                      //
+                                      //           },
+                                      //           icon: const Icon(Icons.delete)),
+                                      //       IconButton(
+                                      //           onPressed: () async {
+                                      //             tossController.isViewVisible=true;
+                                      //             setState(() {
+                                      //
+                                      //             });
+                                      //
+                                      //
+                                      //           },
+                                      //           icon: const Icon(Icons.preview))
+                                      //     ],
+                                      //
+                                      //   ),
+                                      // ]
+                                      ),
 
+                              ])
+                            )),
+      floatingActionButton: Obx(() => tossController.isAddVisible.value
+          ? const SizedBox.shrink()
+          : Container(
+              margin: const EdgeInsets.all(25),
+              child: FloatingActionButton(
+                backgroundColor: Colors.black,
+                onPressed: () {
+                  tossController.isAddVisible.value = true;
+                },
+                child: const Icon(Icons.add),
               ),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Match: " + tossController.arrOfTossContest[index].team1!+" v/s "+tossController.arrOfTossContest[index].team2!,
-                        style: TextStyle(fontSize: 12),
-                        textAlign: (TextAlign.start)),
-                    Text("Match Type:" + tossController.arrOfTossContest[index].matchType!,
-                        style: TextStyle(fontSize: 12),
-                        textAlign: (TextAlign.start)),
-                    Text("User Name:" + tossController.arrOfTossContest[index].userId!,
-                        style: TextStyle(fontSize: 12),
-                        textAlign: (TextAlign.start)),
-                    Text("Entry Fees:" + tossController.arrOfTossContest[index].entryFee!,
-                        style: TextStyle(fontSize: 12),
-                        textAlign: (TextAlign.start)),
-                    Text("Winning Amount:" + tossController.arrOfTossContest[index].winingAmount!,
-                        style: TextStyle(fontSize: 12),
-                        textAlign: (TextAlign.start)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                            onPressed: () async {
-                              tossController.isUpdateVisible=true;
-                              tossController.model_toss=tossController.arrOfTossContest[index];
-                              setState(() {
-
-                              });
-
-                            },
-                            icon: const Icon(Icons.edit)),
-                        IconButton(
-                            onPressed: () async {
-                              // int result = await deleteContest(
-                              //     tossController.arrOfTossContest[index].lastDigitContestId!);
-                              // if (result == 1) {
-                              //   tossController.getAllLDC();
-                              // }
-                              showConfirmDelete(context,index);
-
-
-                            },
-                            icon: const Icon(Icons.delete)),
-                        IconButton(
-                            onPressed: () async {
-                              tossController.isViewVisible=true;
-                              setState(() {
-
-                              });
-
-
-                            },
-                            icon: const Icon(Icons.preview))
-                      ],
-
-                    ),
-                  ]),
-            );
-          }),
-        )),
-      ),
-      floatingActionButton: Container(
-        margin: EdgeInsets.all(25),
-        child: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              if (tossController.isUpdateVisible) {
-                tossController.isUpdateVisible = false;
-              } else {
-                tossController.isAddVisible = !tossController.isAddVisible;
-              }
-            });
-          },
-          child:
-          tossController.isAddVisible || tossController.isUpdateVisible
-              ? Icon(Icons.arrow_back_rounded)
-              : Icon(Icons.add),
-        ),
-      ),
+            )),
     );
   }
 
-  Future showConfirmDelete(BuildContext context,int index){
+  Future showConfirmDelete(BuildContext context, int index) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -152,15 +305,16 @@ class _TossWinnerContestState extends State<TossWinnerContest> {
           actions: <Widget>[
             FlatButton(
                 onPressed: () async {
-
-                  int result = await tossController.deleteContest(context,tossController.arrOfTossContest[index].tossWinnerContestId!);
+                  int result = await tossController.deleteContest(
+                      context,
+                      tossController
+                          .arrOfTossContest[index].tossWinnerContestId!);
                   if (result == 1) {
                     tossController.getAllTossContest();
                   }
                   Navigator.of(context).pop(true);
                 },
-                child: const Text("DELETE")
-            ),
+                child: const Text("DELETE")),
             FlatButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
@@ -172,8 +326,4 @@ class _TossWinnerContestState extends State<TossWinnerContest> {
       },
     );
   }
-
-
-
-
 }
