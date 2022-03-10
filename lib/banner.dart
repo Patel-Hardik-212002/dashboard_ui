@@ -1,10 +1,18 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:http/http.dart' as http;
+
+import 'add_banner.dart';
+import 'last_digit_contest/controller/banner_controller.dart';
+import 'model/model_banner.dart';
 
 class Banner1 extends StatefulWidget {
   const Banner1({Key? key}) : super(key: key);
@@ -14,155 +22,168 @@ class Banner1 extends StatefulWidget {
 }
 
 class _Banner1State extends State<Banner1> {
-  // get pickedImage => null;
-  File? pickedImage;
-  void imagePickerOption() {
-    Get.bottomSheet(
-      SingleChildScrollView(
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10.0),
-            topRight: Radius.circular(10.0),
-          ),
-          child: Container(
-            color: Colors.white,
-            height: 250,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    "Pic Image From",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      pickImage(ImageSource.camera);
-                    },
-                    icon: const Icon(Icons.camera),
-                    label: const Text("CAMERA"),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      pickImage(ImageSource.gallery);
-                    },
-                    icon: const Icon(Icons.image),
-                    label: const Text("GALLERY"),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
+  BannerController bannerController = Get.find();
+  var arrOfBanner;
 
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.close),
-                    label: const Text("CANCEL"),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  pickImage(ImageSource imageType) async {
-    try {
-      final photo = await ImagePicker().pickImage(source: imageType);
-      if (photo == null) return;
-      final tempImage = File(photo.path);
-      setState(() {
-        pickedImage = tempImage;
-      });
-
-      Get.back();
-    } catch (error) {
-      debugPrint(error.toString());
-    }
+  @override
+  void initState() {
+    super.initState();
+    bannerController.getAllBanner();
+    bannerController.isAddVisible.value = false;
+    // ldcController.isUpdateVisible.value = false;
+    // ldcController.isViewVisible.value = false;
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: const Text('IMAGE PICKER'),
-      // ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.indigo, width: 5),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(100),
-                    ),
-                  ),
-                  child: ClipOval(
-                    child: pickedImage != null
-                        ? Image.file(
-                      pickedImage!,
-                      width: 170,
-                      height: 170,
-                      fit: BoxFit.cover,
-                    )
-                        : Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/5/5f/Alberto_conversi_profile_pic.jpg',
-                      width: 170,
-                      height: 170,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 5,
-                  child: IconButton(
-                    onPressed: (){
-                      imagePickerOption();
-                    },
-                    icon: const Icon(
-                      Icons.add_a_photo_outlined,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton.icon(
-                onPressed: (){
-                  imagePickerOption();
-                },
-                icon: const Icon(Icons.add_a_photo_sharp),
-                label: const Text('UPLOAD banner')),
-          )
-        ],
-      ),
+      backgroundColor: Colors.white30,
+      body: Obx(() => Padding(
+          padding: const EdgeInsets.all(0),
+
+          child: bannerController.isAddVisible.value
+              ?Addbanner()
+
+              :
+              // ? const UpdateLDContest()
+              // : ldcController.isViewVisible.value
+              // ? const LDCResult()
+              // : ldcController.isLoading.value
+          //     ? const Center(
+          //   child: CircularProgressIndicator(),
+          // )
+             ListView(
+            children: [
+              Container(
+                height: 100,
+                width: Get.width,
+                color: Colors.white,
+              ),
+              DataTable(
+                  headingTextStyle: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      letterSpacing: 2.0),
+                  columnSpacing: 32,
+                  columns: [
+                    DataColumn(
+                        label: Text("No".toUpperCase())),
+
+                    DataColumn(
+                        label:
+                        Text("title".toUpperCase())),
+                    DataColumn(
+                        label: Text(
+                            "image".toUpperCase())),
+
+                  ],
+                  rows: List<DataRow>.generate(
+                      bannerController.arrOfBanner.length, (index) {
+                    return DataRow(cells: [
+                      DataCell(Text((index + 1).toString())),
+
+                      DataCell(Text((bannerController
+                          .arrOfBanner[index].titile)
+                          .toString())),
+                      DataCell(Image.network(
+                        bannerController
+                            .arrOfBanner[index].image!,
+
+
+                      ) ) ]);
+                  }))
+            ],
+          ))),
+      floatingActionButton: Obx(() => bannerController.isAddVisible.value
+          ? const SizedBox.shrink()
+          : Container(
+        margin: const EdgeInsets.all(25),
+        child: FloatingActionButton(
+          backgroundColor: Colors.black,
+          onPressed: () {
+            bannerController.isAddVisible.value = true;
+
+          },
+          child: const Icon(Icons.add),
+        ),
+      )),
+
     );
-
-
-
+    // return Scaffold(
+    //   // appBar: AppBar(
+    //   //   centerTitle: true,
+    //   //   title: const Text('IMAGE PICKER'),
+    //   // ),
+    //   body: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.stretch,
+    //     children: [
+    //       const SizedBox(
+    //         height: 50,
+    //       ),
+    //       Align(
+    //         alignment: Alignment.center,
+    //         child: Stack(
+    //           children: [
+    //             Container(
+    //               decoration: BoxDecoration(
+    //                 border: Border.all(color: Colors.indigo, width: 5),
+    //                 borderRadius: const BorderRadius.all(
+    //                   Radius.circular(100),
+    //                 ),
+    //               ),
+    //               child: ClipOval(
+    //                 child: selectedImage == null?
+    //                     Image.network(
+    //                       'https://upload.wikimedia.org/wikipedia/commons/5/5f/Alberto_conversi_profile_pic.jpg',
+    //                       width: 170,
+    //                       height: 170,
+    //                       fit: BoxFit.cover,
+    //                     ):Image.memory(selectedImage!),
+    //               ),
+    //             ),
+    //             Positioned(
+    //               bottom: 0,
+    //               right: 5,
+    //               child: IconButton(
+    //                 onPressed: () {
+    //                   pickImage(ImageSource.gallery);
+    //                 },
+    //                 icon: const Icon(
+    //                   Icons.add_a_photo_outlined,
+    //                   color: Colors.blue,
+    //                   size: 30,
+    //                 ),
+    //               ),
+    //             )
+    //           ],
+    //         ),
+    //       ),
+    //       const SizedBox(
+    //         height: 20,
+    //       ),
+    //       Padding(
+    //         padding: const EdgeInsets.all(8.0),
+    //         child: ElevatedButton.icon(
+    //             onPressed: () {
+    //               pickImage(ImageSource.gallery);
+    //             },
+    //             icon: const Icon(Icons.add_a_photo_sharp),
+    //             label: const Text('UPLOAD banner')),
+    //       )
+    //     ],
+    //   ),
+    // );
   }
+
+  // Uint8List? selectedImage;
+  // String base64Image="";
+  //
+  // pickImage(ImageSource imageType) async {
+  //   setState(() async {
+  //     Uint8List? selectedImage = await ImagePickerWeb.getImageAsBytes();
+  //     base64Image=base64Encode(selectedImage!);
+  //   });
+  // }
+
 }
