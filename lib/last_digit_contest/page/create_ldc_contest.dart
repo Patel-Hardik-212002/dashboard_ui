@@ -18,16 +18,19 @@ class _CreateContestState extends State<CreateContest> {
   String selectMatch = "";
   String matchId = "";
 
-  String winningAmount = "";
-  String contestName = "";
+  // String winningAmount = "";
+  // String contestName = "";
   String inningType = "";
   String description = "Test Data";
   bool isMatchVisible = false;
 
 
-  late TextEditingController entryFee;
+  // late TextEditingController entryFee;
   late TextEditingController textEditingControllerMatch;
   late TextEditingController textEditingControllerInningType;
+  late TextEditingController textEditingControllerEntryFee;
+  late TextEditingController winningAmount;
+  late TextEditingController contestName;
 
   MatchController matchController = Get.find();
   LDCController ldcController = Get.find();
@@ -37,9 +40,12 @@ class _CreateContestState extends State<CreateContest> {
   @override
   void initState() {
     super.initState();
-    entryFee=TextEditingController();
+
     textEditingControllerInningType = TextEditingController();
     textEditingControllerMatch = TextEditingController();
+    textEditingControllerEntryFee = TextEditingController();
+    winningAmount = TextEditingController() ;
+    contestName = TextEditingController();
     matchController.getAllMatch();
   }
 
@@ -58,219 +64,415 @@ class _CreateContestState extends State<CreateContest> {
         ),
         title: Text("Create Contest".toUpperCase(),style: const TextStyle(letterSpacing: 2.0,color: Colors.black),),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: Get.width * 0.30),
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                    child: InkWell(
-                  onTap: () {
-                    isMatchVisible = !isMatchVisible;
-                    setState(() {});
-                  },
-                  child: TextField(
-                    onChanged: (String value) {
-                      selectMatch = value;
+        const SizedBox(
+        height: 32,
+        ),
+        InkWell(
+          onTap: () {
+            isMatchVisible = !isMatchVisible;
+            setState(() {});
+          },
+          child: SizedBox(
+            height: 60,
+            width: Get.width * 0.30,
+            child: TextField(
+              enabled: false,
+              controller: textEditingControllerMatch,
+              onChanged: (String value) {
+                selectMatch = value;
+              },
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Select Match',
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: isMatchVisible ? 0 : 16,
+        ),
+          isMatchVisible
+              ? Container(
+            color: Colors.white,
+            width: Get.width * 0.30,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: matchController.arrOfMatch.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      matchId =
+                      matchController.arrOfMatch[index].matchId!;
+                      textEditingControllerMatch.text =
+                          matchController.arrOfMatch[index].team1! +
+                              " v/s " +
+                              matchController.arrOfMatch[index].team2!;
+
+                      isMatchVisible = false;
+
+                      setState(() {});
                     },
-                    enabled: false,
-                    controller: textEditingControllerMatch,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Select Match',
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
+                        color: Colors.transparent,
+                        // margin: const EdgeInsets.only(bottom: 15),
+                        child: Row(children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Text(matchController.arrOfMatch[index]
+                                    .matchType ==
+                                    "1"
+                                    ? "T20"
+                                    : matchController.arrOfMatch[index]
+                                    .matchType ==
+                                    "2"
+                                    ? "ODI"
+                                    : "TEST"),
+                                Text("  Match : " +
+                                    matchController
+                                        .arrOfMatch[index].team1! +
+                                    " v/s " +
+                                    matchController
+                                        .arrOfMatch[index].team2!)
+                              ],
+                            ),
+                          ),
+                          Text(matchController
+                              .arrOfMatch[index].dateTime
+                              .toString())
+                        ])),
+                  );
+                }),
+          )
+              : const SizedBox.shrink(),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+                controller: textEditingControllerEntryFee,
+                maxLength: 5,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Entry Fee',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+                controller: winningAmount,
+                maxLength: 5,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Wining Amount',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+                controller: contestName,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Contest Name',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+                maxLength: 1,
+                controller: textEditingControllerInningType,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                onChanged: (String value) {
+                  if (int.parse(value) > 4) {
+                    textEditingControllerInningType.clear();
+                    showSnackBar(context, "Inning not more than 4");
+                  }
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Inning Type',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Material(
+              borderRadius: BorderRadius.circular(50),
+              color: Colors.black,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                onTap: () async {
+                  Map<String, String> result =
+                            await ldcController.createContest(matchId,contestName.text,textEditingControllerEntryFee.text,winningAmount.text,description,inningType);
+
+                        if (result['status'] == "1") {
+                          showSnackBar(context, result['message']!);
+                          ldcController.getAllLDC();
+                          Get.to(Home(
+                            position: 1,
+                          ));
+                        } else {
+                          showSnackBar(context, result['message']!);
+                        }
+                },
+                child: SizedBox(
+                  width: 100,
+                  height: 40,
+                  child: Center(
+                    child: ldcController.isLoading.value
+                        ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                        : const Text(
+                      "Create Contest",
+                      style: TextStyle(
+                          color: Colors.white, letterSpacing: 1.0),
                     ),
                   ),
-                )),
-                Expanded(child: Text("")),
-                Expanded(child: Text(""))
-              ],
-            ),
-            SizedBox(
-              height: isMatchVisible ? 0 : 16,
-            ),
-            isMatchVisible
-                ? Row(
-                    children: [
-                      Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: matchController.arrOfMatch.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    matchId = matchController
-                                        .arrOfMatch[index].matchId!;
-                                    textEditingControllerMatch.text =
-                                        matchController
-                                                .arrOfMatch[index].team1! +
-                                            " v/s " +
-                                            matchController
-                                                .arrOfMatch[index].team2!;
-
-                                    isMatchVisible = false;
-
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 16),
-                                      color: Colors.transparent,
-                                      // margin: const EdgeInsets.only(bottom: 15),
-                                      child: Row(children: [
-                                        Expanded(
-                                          child: Row(
-                                            children: [
-                                              Text(matchController
-                                                          .arrOfMatch[index]
-                                                          .matchType ==
-                                                      "1"
-                                                  ? "T20"
-                                                  : matchController
-                                                              .arrOfMatch[index]
-                                                              .matchType ==
-                                                          "2"
-                                                      ? "ODI"
-                                                      : "TEST"),
-                                              Text("  Match : " +
-                                                  matchController
-                                                      .arrOfMatch[index]
-                                                      .team1! +
-                                                  " v/s " +
-                                                  matchController
-                                                      .arrOfMatch[index].team2!)
-                                            ],
-                                          ),
-                                        ),
-                                        Text(matchController
-                                            .arrOfMatch[index].dateTime
-                                            .toString())
-                                      ])),
-                                );
-                              })),
-                      Expanded(child: Text("")),
-                      Expanded(child: Text(""))
-                    ],
-                  )
-                : SizedBox.shrink(),
-            Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  maxLength: 5,
-                  controller: entryFee,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Entry Fee',
-                  ),
-                )),
-                Expanded(child: Text("")),
-                Expanded(child: Text(""))
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  maxLength: 5,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  onChanged: (String value) {
-                    winningAmount = value;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter wining amount',
-                  ),
-                )),
-                Expanded(child: Text("")),
-                Expanded(child: Text(""))
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  onChanged: (String value) {
-                    contestName = value;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Contest Name',
-                  ),
-                )),
-                Expanded(child: Text("")),
-                Expanded(child: Text(""))
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  maxLength: 1,
-                  controller: textEditingControllerInningType,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  onChanged: (String value) {
-                    inningType = value;
-                    if (int.parse(inningType) > 4) {
-                      textEditingControllerInningType.clear();
-                      showSnackBar(context, "Inning not more than 4");
-                    }
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Inning Type',
-                  ),
-                )),
-                Expanded(child: Text("")),
-                Expanded(child: Text(""))
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            SizedBox(
-              height: 150,
-            ),
-            FlatButton(
-              child: const Text(
-                'Submit',
-                style: TextStyle(fontSize: 16.0),
+                ),
               ),
-              color: Colors.blueAccent,
-              textColor: Colors.white,
-              onPressed: () async {
-                Map<String, String> result =
-                    await ldcController.createContest(matchId,contestName,entryFee.text,winningAmount,description,inningType);
-
-                if (result['status'] == "1") {
-                  showSnackBar(context, result['message']!);
-                  ldcController.getAllLDC();
-                  Get.to(Home(
-                    position: 1,
-                  ));
-                } else {
-                  showSnackBar(context, result['message']!);
-                }
-              },
             ),
+          // children: <Widget>[
+          //   Row(
+          //     children: [
+          //       Expanded(
+          //           child: InkWell(
+          //         onTap: () {
+          //           isMatchVisible = !isMatchVisible;
+          //           setState(() {});
+          //         },
+          //         child: TextField(
+          //           onChanged: (String value) {
+          //             selectMatch = value;
+          //           },
+          //           enabled: false,
+          //           controller: textEditingControllerMatch,
+          //           decoration: InputDecoration(
+          //             border: OutlineInputBorder(),
+          //             hintText: 'Select Match',
+          //           ),
+          //         ),
+          //       )),
+          //       Expanded(child: Text("")),
+          //       Expanded(child: Text(""))
+          //     ],
+          //   ),
+          //   SizedBox(
+          //     height: isMatchVisible ? 0 : 16,
+          //   ),
+          //   isMatchVisible
+          //       ? Row(
+          //           children: [
+          //             Expanded(
+          //                 child: ListView.builder(
+          //                     shrinkWrap: true,
+          //                     physics: const NeverScrollableScrollPhysics(),
+          //                     itemCount: matchController.arrOfMatch.length,
+          //                     itemBuilder: (context, index) {
+          //                       return InkWell(
+          //                         onTap: () {
+          //                           matchId = matchController
+          //                               .arrOfMatch[index].matchId!;
+          //                           textEditingControllerMatch.text =
+          //                               matchController
+          //                                       .arrOfMatch[index].team1! +
+          //                                   " v/s " +
+          //                                   matchController
+          //                                       .arrOfMatch[index].team2!;
+          //
+          //                           isMatchVisible = false;
+          //
+          //                           setState(() {});
+          //                         },
+          //                         child: Container(
+          //                             padding: const EdgeInsets.symmetric(
+          //                                 horizontal: 8, vertical: 16),
+          //                             color: Colors.transparent,
+          //                             // margin: const EdgeInsets.only(bottom: 15),
+          //                             child: Row(children: [
+          //                               Expanded(
+          //                                 child: Row(
+          //                                   children: [
+          //                                     Text(matchController
+          //                                                 .arrOfMatch[index]
+          //                                                 .matchType ==
+          //                                             "1"
+          //                                         ? "T20"
+          //                                         : matchController
+          //                                                     .arrOfMatch[index]
+          //                                                     .matchType ==
+          //                                                 "2"
+          //                                             ? "ODI"
+          //                                             : "TEST"),
+          //                                     Text("  Match : " +
+          //                                         matchController
+          //                                             .arrOfMatch[index]
+          //                                             .team1! +
+          //                                         " v/s " +
+          //                                         matchController
+          //                                             .arrOfMatch[index].team2!)
+          //                                   ],
+          //                                 ),
+          //                               ),
+          //                               Text(matchController
+          //                                   .arrOfMatch[index].dateTime
+          //                                   .toString())
+          //                             ])),
+          //                       );
+          //                     })),
+          //             Expanded(child: Text("")),
+          //             Expanded(child: Text(""))
+          //           ],
+          //         )
+          //       : SizedBox.shrink(),
+          //   Row(
+          //     children: [
+          //       Expanded(
+          //           child: TextField(
+          //         maxLength: 5,
+          //         controller: entryFee,
+          //         inputFormatters: <TextInputFormatter>[
+          //           FilteringTextInputFormatter.digitsOnly
+          //         ],
+          //
+          //         decoration: InputDecoration(
+          //           border: OutlineInputBorder(),
+          //           hintText: 'Enter Entry Fee',
+          //         ),
+          //       )),
+          //       Expanded(child: Text("")),
+          //       Expanded(child: Text(""))
+          //     ],
+          //   ),
+          //   const SizedBox(
+          //     height: 16,
+          //   ),
+          //   Row(
+          //     children: [
+          //       Expanded(
+          //           child: TextField(
+          //         maxLength: 5,
+          //         inputFormatters: <TextInputFormatter>[
+          //           FilteringTextInputFormatter.digitsOnly
+          //         ],
+          //         onChanged: (String value) {
+          //           winningAmount = value;
+          //         },
+          //         decoration: InputDecoration(
+          //           border: OutlineInputBorder(),
+          //           hintText: 'Enter wining amount',
+          //         ),
+          //       )),
+          //       Expanded(child: Text("")),
+          //       Expanded(child: Text(""))
+          //     ],
+          //   ),
+          //   const SizedBox(
+          //     height: 16,
+          //   ),
+          //   Row(
+          //     children: [
+          //       Expanded(
+          //           child: TextField(
+          //         onChanged: (String value) {
+          //           contestName = value;
+          //         },
+          //         decoration: InputDecoration(
+          //           border: OutlineInputBorder(),
+          //           hintText: 'Contest Name',
+          //         ),
+          //       )),
+          //       Expanded(child: Text("")),
+          //       Expanded(child: Text(""))
+          //     ],
+          //   ),
+          //   const SizedBox(
+          //     height: 16,
+          //   ),
+          //   Row(
+          //     children: [
+          //       Expanded(
+          //           child: TextField(
+          //         maxLength: 1,
+          //         controller: textEditingControllerInningType,
+          //         inputFormatters: <TextInputFormatter>[
+          //           FilteringTextInputFormatter.digitsOnly
+          //         ],
+          //         onChanged: (String value) {
+          //           inningType = value;
+          //           if (int.parse(inningType) > 4) {
+          //             textEditingControllerInningType.clear();
+          //             showSnackBar(context, "Inning not more than 4");
+          //           }
+          //         },
+          //         decoration: InputDecoration(
+          //           border: OutlineInputBorder(),
+          //           hintText: 'Enter Inning Type',
+          //         ),
+          //       )),
+          //       Expanded(child: Text("")),
+          //       Expanded(child: Text(""))
+          //     ],
+          //   ),
+          //   const SizedBox(
+          //     height: 16,
+          //   ),
+          //   SizedBox(
+          //     height: 150,
+          //   ),
+          //   FlatButton(
+          //     child: const Text(
+          //       'Submit',
+          //       style: TextStyle(fontSize: 16.0),
+          //     ),
+          //     color: Colors.blueAccent,
+          //     textColor: Colors.white,
+          //     onPressed: () async {
+          //       Map<String, String> result =
+          //           await ldcController.createContest(matchId,contestName,entryFee.text,winningAmount,description,inningType);
+          //
+          //       if (result['status'] == "1") {
+          //         showSnackBar(context, result['message']!);
+          //         ldcController.getAllLDC();
+          //         Get.to(Home(
+          //           position: 1,
+          //         ));
+          //       } else {
+          //         showSnackBar(context, result['message']!);
+          //       }
+          //     },
+          //   ),
           ],
         ),
       ),

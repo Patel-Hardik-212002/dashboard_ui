@@ -43,7 +43,7 @@ class _Banner1State extends State<Banner1> {
           padding: const EdgeInsets.all(0),
 
           child: bannerController.isAddVisible.value
-              ?Addbanner()
+              ?AddBanner()
 
               :
               // ? const UpdateLDContest()
