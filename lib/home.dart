@@ -7,9 +7,9 @@ import 'package:dashboard_ui/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'less_run_per_over_contest.dart';
+import 'less_run_per_over/less_run_per_over_contest.dart';
 import 'match/add_match.dart';
-import 'match_winner_contest.dart';
+import 'match_winner_contest/match_winner_contest.dart';
 
 class Home extends StatefulWidget {
   int pos = 0;

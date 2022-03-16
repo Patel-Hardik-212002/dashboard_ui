@@ -22,8 +22,6 @@ class ModelLdc {
     this.team1,
     this.team2,
     this.matchType,
-    this.overScore,
-    this.winningOver,
     this.joinList,
   });
 
@@ -35,12 +33,10 @@ class ModelLdc {
   String ?winningAmount;
   String ?description;
   String ?inningScore;
-  String ?winningOver;
-  String ?overScore;
+  String ?inningType;
   String ?team1;
   String ?team2;
   String ?matchType;
-  String ?inningType;
   List<JoinList>? joinList;
 
   factory ModelLdc.fromJson(Map<String, dynamic> json) => ModelLdc(
@@ -51,8 +47,7 @@ class ModelLdc {
     entryFee: json["entry_fee"],
     winningAmount: json["winning_amount"],
     description: json["description"],
-    overScore: json["over_score"],
-    winningOver: json["winning_over"] == null ? null : json["winning_over"],
+    inningScore: json["inning_score"] == null ? null : json["inning_score"],
     inningType: json["inning_type"],
     team1: json["team1"],
     team2: json["team2"],
@@ -73,8 +68,6 @@ class ModelLdc {
     "team1": team1,
     "team2": team2,
     "match_type": matchType,
-    "over_score":overScore,
-    "winning_over":winningOver,
     "join_list": List<dynamic>.from(joinList!.map((x) => x.toJson())),
   };
 }
