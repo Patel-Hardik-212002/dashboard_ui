@@ -52,6 +52,8 @@ class _UserState extends State<User> {
               HDivier(),
               Expanded(child: Text("Level".toUpperCase(),style: TextStyle(color: Colors.white),)),
               HDivier(),
+              Expanded(child: Text("wallet".toUpperCase(),style: TextStyle(color: Colors.white),)),
+              HDivier(),
             ],
           ),
         ),
@@ -75,6 +77,8 @@ class _UserState extends State<User> {
                     Expanded(child:  Text(arrOfUser[index].email??"-")),
                     HDivier(),
                     Expanded(child:  Text(arrOfUser[index].level??"-")),
+                    HDivier(),
+                    Expanded(child:  Text(arrOfUser[index].wallet??"-")),
                     HDivier(),
                   ],
                 );

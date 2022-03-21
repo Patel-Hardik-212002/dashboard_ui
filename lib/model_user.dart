@@ -19,6 +19,7 @@ class ModelUser {
     this.level,
     this.referalCode,
     this.referCode,
+    this.wallet,
   });
 
   String? userId;
@@ -30,6 +31,7 @@ class ModelUser {
   String? level;
   String? referalCode;
   String? referCode;
+  String? wallet;
 
   factory ModelUser.fromJson(Map<String, dynamic> json) => ModelUser(
     userId: json["user_id"],
@@ -41,6 +43,7 @@ class ModelUser {
     level: json["level"],
     referalCode: json["referal_code"] == null ? null : json["referal_code"],
     referCode: json["refer_code"] == null ? null : json["refer_code"],
+    wallet: json["wallet"] == null ? null : json["wallet"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,7 +56,6 @@ class ModelUser {
     "level": level,
     "referal_code": referalCode == null ? null : referalCode,
     "refer_code": referCode == null ? null : referCode,
+    "wallet": wallet == null ? null : wallet,
   };
-
-  fromJson(Map<String, dynamic> e) {}
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../model/model_last_digit_contest.dart';
+import 'model_less_run_per_over_contest.dart';
 
 class LessRunPerOverController extends GetxController {
 
@@ -14,22 +15,22 @@ class LessRunPerOverController extends GetxController {
 
 
 
-  RxList<ModelLdc> arrOfLessRunPerOver = <ModelLdc>[].obs;
+  RxList<ModelOver> arrOfLessRunPerOver = <ModelOver>[].obs;
   int selectedContest=-1;
 
-  ModelLdc? modelLdc;
+  ModelOver? modelOver;
 
-  Future<void> getAllLDC() async {
+  Future<void> getAllOver() async {
     arrOfLessRunPerOver.clear();
     isLoading.value=true;
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/ldc/getalllastdigitcontest'));
+        'https://codinghouse.in/battingraja/over/getallovercontest?user_id=1'));
 
     if (response.statusCode == 200) {
       isLoading.value=false;
       var json = jsonDecode(response.body);
       arrOfLessRunPerOver.addAll((json as List)
-          .map((e) => ModelLdc.fromJson(e as Map<String, dynamic>)));
+          .map((e) => ModelOver.fromJson(e as Map<String, dynamic>)));
     }else{
       isLoading.value=false;
     }
@@ -83,7 +84,7 @@ class LessRunPerOverController extends GetxController {
       Uri.parse(
           'https://codinghouse.in/battingraja/over/updateovercontest'),
       body: {
-        'last_digit_contest_id': modelLdc!.lastDigitContestId.toString(),
+         'less_run_per_over_contest_id': modelOver!.lessRunPerOverContestId.toString(),
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
@@ -100,7 +101,7 @@ class LessRunPerOverController extends GetxController {
       var json = jsonDecode(response.body);
       result['status'] = "1";
       result['message'] = json['message'];
-      getAllLDC();
+      getAllOver();
       isLoading.value=false;
       return result;
     } else  {
@@ -113,19 +114,19 @@ class LessRunPerOverController extends GetxController {
   }
 
 
-  Future<Map<String, String>> deleteContest(String matchId) async {
+  Future<Map<String, String>> deleteContest(String id) async {
     Map<String, String> result = {};
 
     http.Response response = await http.post(
-      Uri.parse('https://codinghouse.in/battingraja/user/deletecontest'),
-      body: {'match_id': matchId},
+      Uri.parse('https://codinghouse.in/battingraja/over/deletecontest'),
+      body: {'less_run_per_over_contest_id': id},
     );
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       result['status'] = "1";
       result['message'] = json['message'];
-      getAllLDC();
+      getAllOver();
       return result;
     } else {
       result['status'] = "0";

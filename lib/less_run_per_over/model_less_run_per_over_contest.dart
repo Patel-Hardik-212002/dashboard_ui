@@ -1,97 +1,81 @@
 // To parse this JSON data, do
 //
-//     final modelldc = modelldcFromJson(jsonString);
+//     final modelOver = modelOverFromJson(jsonString);
 
 import 'dart:convert';
 
-List<ModelLdc> modelldcFromJson(String str) => List<ModelLdc>.from(json.decode(str).map((x) => ModelLdc.fromJson(x)));
+List<ModelOver> modelOverFromJson(String str) => List<ModelOver>.from(json.decode(str).map((x) => ModelOver.fromJson(x)));
 
-String modelldcToJson(List<ModelLdc> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String modelOverToJson(List<ModelOver> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ModelLdc {
-  ModelLdc({
-    this.lastDigitContestId,
+class ModelOver {
+  ModelOver({
+    this.lessRunPerOverContestId,
     this.userId,
     this.matchId,
     this.contestName,
     this.entryFee,
     this.winningAmount,
     this.description,
-    this.inningScore,
     this.inningType,
+    this.winningOver,
+    this.overScore,
+    this.status,
     this.team1,
     this.team2,
     this.matchType,
     this.joinList,
   });
 
-  String ?lastDigitContestId;
-  String ?userId;
-  String ?matchId;
-  String ?contestName;
-  String ?entryFee;
-  String ?winningAmount;
-  String ?description;
-  String ?inningScore;
-  String ?inningType;
-  String ?team1;
-  String ?team2;
-  String ?matchType;
-  List<JoinList>? joinList;
+  String? lessRunPerOverContestId;
+  String? userId;
+  String? matchId;
+  String? contestName;
+  String? entryFee;
+  String? winningAmount;
+  String?description;
+  String? inningType;
+  dynamic? winningOver;
+  dynamic? overScore;
+  String? status;
+  String? team1;
+  String? team2;
+  String? matchType;
+  List<dynamic>? joinList;
 
-  factory ModelLdc.fromJson(Map<String, dynamic> json) => ModelLdc(
-    lastDigitContestId: json["last_digit_contest_id"],
+  factory ModelOver.fromJson(Map<String, dynamic> json) => ModelOver(
+    lessRunPerOverContestId: json["less_run_per_over_contest_id"],
     userId: json["user_id"],
     matchId: json["match_id"],
     contestName: json["contest_name"],
     entryFee: json["entry_fee"],
     winningAmount: json["winning_amount"],
     description: json["description"],
-    inningScore: json["inning_score"] == null ? null : json["inning_score"],
     inningType: json["inning_type"],
+    winningOver: json["winning_over"],
+    overScore: json["over_score"],
+    status: json["status"],
     team1: json["team1"],
     team2: json["team2"],
     matchType: json["match_type"],
-    joinList: List<JoinList>.from(json["join_list"].map((x) => JoinList.fromJson(x))),
+    joinList: List<dynamic>.from(json["join_list"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
-    "last_digit_contest_id": lastDigitContestId,
+    "less_run_per_over_contest_id": lessRunPerOverContestId,
     "user_id": userId,
     "match_id": matchId,
     "contest_name": contestName,
     "entry_fee": entryFee,
     "winning_amount": winningAmount,
     "description": description,
-    "inning_score": inningScore == null ? null : inningScore,
     "inning_type": inningType,
+    "winning_over": winningOver,
+    "over_score": overScore,
+    "status": status,
     "team1": team1,
     "team2": team2,
     "match_type": matchType,
-    "join_list": List<dynamic>.from(joinList!.map((x) => x.toJson())),
-  };
-}
-
-class JoinList {
-  JoinList({
-    this.userId,
-    this.userSelectedDigit,
-    this.name,
-  });
-
-  String? userId;
-  String ?userSelectedDigit;
-  String ?name;
-
-  factory JoinList.fromJson(Map<String, dynamic> json) => JoinList(
-    userId: json["user_id"],
-    userSelectedDigit: json["user_selected_digit"],
-    name: json["name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "user_id": userId,
-    "user_selected_digit": userSelectedDigit,
-    "name": name,
+    "join_list": List<dynamic>.from(joinList!.map((x) => x)),
   };
 }

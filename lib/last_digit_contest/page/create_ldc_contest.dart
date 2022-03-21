@@ -254,6 +254,7 @@ class _CreateContestState extends State<CreateContest> {
                         ? const CircularProgressIndicator(
                       color: Colors.white,
                     )
+
                         : const Text(
                       "Create Contest",
                       style: TextStyle(
@@ -476,6 +477,7 @@ class _CreateContestState extends State<CreateContest> {
           ],
         ),
       ),
+
     );
   }
 }

@@ -27,7 +27,7 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
     lessRunPerOverController.isAddVisible.value = false;
     lessRunPerOverController.isUpdateVisible.value = false;
     lessRunPerOverController.isViewVisible.value = false;
-    lessRunPerOverController.getAllLDC();
+    lessRunPerOverController.getAllOver();
   }
   @override
   bool isAddVisible = false;
@@ -155,13 +155,13 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
                               (lessRunPerOverController
                                   .arrOfLessRunPerOver[
                               index]
-                                  .inningScore ==
+                                  .winningOver ==
                                   null
                                   ? "Upcoming"
                                   : lessRunPerOverController
                                   .arrOfLessRunPerOver[
                               index]
-                                  .inningScore ==
+                                  .winningOver ==
                                   "0"
                                   ? "Upcoming"
                                   : "Completed")
@@ -171,13 +171,13 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
                                   color: lessRunPerOverController
                                       .arrOfLessRunPerOver[
                                   index]
-                                      .inningScore ==
+                                      .winningOver ==
                                       null
                                       ? Colors.green
                                       : lessRunPerOverController
                                       .arrOfLessRunPerOver[
                                   index]
-                                      .inningScore ==
+                                      .winningOver ==
                                       "0"
                                       ? Colors.green
                                       : Colors.red),
@@ -191,7 +191,7 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
                                       lessRunPerOverController
                                           .isUpdateVisible
                                           .value = true;
-                                      lessRunPerOverController.modelLdc =
+                                      lessRunPerOverController.modelOver =
                                       lessRunPerOverController
                                           .arrOfLessRunPerOver[
                                       index];
@@ -305,7 +305,7 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
           actions: <Widget>[
             FlatButton(
                 onPressed: () {
-                  // lessRunPerOverController.deleteContest(context, lessRunPerOverController.arrOfLessRunPerOver[index].matchWinnerContestId.toString());
+                  lessRunPerOverController.deleteContest( lessRunPerOverController.arrOfLessRunPerOver[index].lessRunPerOverContestId.toString());
                   Navigator.of(context).pop(true);
                 },
                 child: const Text("DELETE")

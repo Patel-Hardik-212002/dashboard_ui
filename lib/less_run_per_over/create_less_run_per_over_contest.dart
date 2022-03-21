@@ -250,7 +250,7 @@ class _CreateLessRunPerOverContestState
 
                   if (result['status'] == "1") {
                     showSnackBar(context, result['message']!);
-                    lessRunPerOverController.getAllLDC();
+                    lessRunPerOverController.getAllOver();
                     Get.to(Home(
                       position: 1,
                     ));

@@ -38,26 +38,26 @@ class _UpdateLessRunPerOverContestState extends State<UpdateLessRunPerOverContes
   @override
   void initState() {
     super.initState();
-    matchId = lessRunPerOverController.modelLdc!.matchId!;
+    matchId = lessRunPerOverController.modelOver!.matchId!;
     textEditingControllerEntryFee = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.entryFee.toString());
+        text: lessRunPerOverController.modelOver!.entryFee.toString());
     winningAmount = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.winningAmount.toString());
+        text: lessRunPerOverController.modelOver!.winningAmount.toString());
     contestName = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.contestName.toString());
+        text: lessRunPerOverController.modelOver!.contestName.toString());
     description = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.description.toString());
+        text: lessRunPerOverController.modelOver!.description.toString());
     overScore = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.overScore.toString());
+        text: lessRunPerOverController.modelOver!.overScore.toString());
 
     textEditingControllerMatch = TextEditingController();
 
 
     textEditingControllerInningType = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.inningType.toString());
+        text: lessRunPerOverController.modelOver!.inningType.toString());
 
     winningOver = TextEditingController(
-        text: lessRunPerOverController.modelLdc!.winningOver.toString());
+        text: lessRunPerOverController.modelOver!.winningOver.toString());
 
 
 
