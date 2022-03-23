@@ -1,12 +1,12 @@
 // To parse this JSON data, do
 //
-//     final modelldc = modelldcFromJson(jsonString);
+//     final modelLdc = modelLdcFromJson(jsonString);
 
 import 'dart:convert';
 
-List<ModelLdc> modelldcFromJson(String str) => List<ModelLdc>.from(json.decode(str).map((x) => ModelLdc.fromJson(x)));
+List<ModelLdc> modelLdcFromJson(String str) => List<ModelLdc>.from(json.decode(str).map((x) => ModelLdc.fromJson(x)));
 
-String modelldcToJson(List<ModelLdc> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String modelLdcToJson(List<ModelLdc> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ModelLdc {
   ModelLdc({
@@ -19,28 +19,28 @@ class ModelLdc {
     this.description,
     this.inningScore,
     this.inningType,
+    this.status,
+    this.minUser,
     this.team1,
     this.team2,
     this.matchType,
-    this.overScore,
-    this.winningOver,
     this.joinList,
   });
 
-  String ?lastDigitContestId;
-  String ?userId;
-  String ?matchId;
-  String ?contestName;
-  String ?entryFee;
-  String ?winningAmount;
-  String ?description;
-  String ?inningScore;
-  String ?winningOver;
-  String ?overScore;
-  String ?team1;
-  String ?team2;
-  String ?matchType;
-  String ?inningType;
+  String? lastDigitContestId;
+  String? userId;
+  String? matchId;
+  String? contestName;
+  String? entryFee;
+  String? winningAmount;
+  String? description;
+  String? inningScore;
+  String? inningType;
+  String? status;
+  String? minUser;
+  String? team1;
+  String? team2;
+  String? matchType;
   List<JoinList>? joinList;
 
   factory ModelLdc.fromJson(Map<String, dynamic> json) => ModelLdc(
@@ -51,9 +51,10 @@ class ModelLdc {
     entryFee: json["entry_fee"],
     winningAmount: json["winning_amount"],
     description: json["description"],
-    overScore: json["over_score"],
-    winningOver: json["winning_over"] == null ? null : json["winning_over"],
+    inningScore: json["inning_score"],
     inningType: json["inning_type"],
+    status: json["status"],
+    minUser: json["min_user"],
     team1: json["team1"],
     team2: json["team2"],
     matchType: json["match_type"],
@@ -68,13 +69,13 @@ class ModelLdc {
     "entry_fee": entryFee,
     "winning_amount": winningAmount,
     "description": description,
-    "inning_score": inningScore == null ? null : inningScore,
+    "inning_score": inningScore,
     "inning_type": inningType,
+    "status": status,
+    "min_user": minUser,
     "team1": team1,
     "team2": team2,
     "match_type": matchType,
-    "over_score":overScore,
-    "winning_over":winningOver,
     "join_list": List<dynamic>.from(joinList!.map((x) => x.toJson())),
   };
 }
@@ -87,8 +88,8 @@ class JoinList {
   });
 
   String? userId;
-  String ?userSelectedDigit;
-  String ?name;
+  String? userSelectedDigit;
+  String? name;
 
   factory JoinList.fromJson(Map<String, dynamic> json) => JoinList(
     userId: json["user_id"],

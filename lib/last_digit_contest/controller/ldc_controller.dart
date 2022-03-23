@@ -30,6 +30,7 @@ class LDCController extends GetxController {
       var json = jsonDecode(response.body);
       arrOfLDC.addAll((json as List)
           .map((e) => ModelLdc.fromJson(e as Map<String, dynamic>)));
+      print("");
     }else{
       isLoading.value=false;
     }
@@ -41,7 +42,9 @@ class LDCController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String inningType) async {
+      String inningType,
+      String minimumUser,
+      ) async {
     Map<String, String> result = {};
 
     http.Response response = await http.post(
@@ -55,6 +58,7 @@ class LDCController extends GetxController {
         'winning_amount': winningAmount,
         'description': description,
         'inning_type': inningType,
+        'minimum_user': minimumUser,
       },
     );
     if (response.statusCode == 200) {
@@ -75,7 +79,7 @@ class LDCController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String inningType, String inningScore) async {
+      String inningType, String inningScore,String minimumUser,) async {
     Map<String, String> result = {};
     isLoading.value=true;
     http.Response response = await http.post(
@@ -92,6 +96,7 @@ class LDCController extends GetxController {
         'description': description,
         'inning_type': inningType,
         'inning_score': inningScore,
+        'minimum_user': minimumUser,
       },
     );
 

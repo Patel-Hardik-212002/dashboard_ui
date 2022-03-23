@@ -153,35 +153,42 @@ class _TossWinnerContestState extends State<TossWinnerContest> {
                                                       .toString()))
                                               .toString())),
                                           DataCell(Text(
-                                            (tossController
+                                            tossController
                                                             .arrOfTossContest[
                                                                 index]
-                                                            .tossResult ==
-                                                        null
+                                                            .status ==
+                                                        "1"
                                                     ? "Upcoming"
                                                     : tossController
                                                                 .arrOfTossContest[
                                                                     index]
-                                                                .tossResult ==
-                                                            "0"
-                                                        ? "Upcoming"
-                                                        : "Completed")
-                                                .toString()
-                                                .toUpperCase(),
+                                                                .status ==
+                                                            "2"
+                                                        ? "Ongoing"
+                                                        : tossController
+                                                .arrOfTossContest[
+                                            index]
+                                                .status ==
+                                                "3"?"Completed":"Cancel"
+                                              ,
                                             style: TextStyle(
                                                 color: tossController
                                                             .arrOfTossContest[
                                                                 index]
-                                                            .tossResult ==
-                                                        null
-                                                    ? Colors.green
+                                                            .status ==
+                                                        "1"
+                                                    ? Colors.black
                                                     : tossController
                                                                 .arrOfTossContest[
                                                                     index]
-                                                                .tossResult ==
-                                                            "0"
+                                                                .status ==
+                                                            "2"
                                                         ? Colors.green
-                                                        : Colors.red),
+                                                        : tossController
+                                                    .arrOfTossContest[
+                                                index]
+                                                    .status ==
+                                                    "3"?Colors.grey:Colors.red),
                                           )),
                                           DataCell(Row(
                                             mainAxisAlignment:

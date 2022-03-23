@@ -30,6 +30,7 @@ class _UpdateMatchWinnerContestState extends State<UpdateMatchWinnerContest> {
   late TextEditingController description;
   late TextEditingController winingTeam;
   late TextEditingController matchWinnerId;
+  late TextEditingController minimumUser;
   late TextEditingController userId;
 
   MatchController matchController = Get.find();
@@ -272,6 +273,7 @@ class _UpdateMatchWinnerContestState extends State<UpdateMatchWinnerContest> {
                     winningAmount.text,
                     description.text,
                     winingTeam.text,
+
                   );
                   if (result['status'] == "1") {
                     showSnackBar(context, result['message']!);

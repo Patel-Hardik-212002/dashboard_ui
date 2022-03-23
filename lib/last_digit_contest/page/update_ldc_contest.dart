@@ -27,6 +27,7 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
   late TextEditingController contestName;
   late TextEditingController description;
   late TextEditingController inningScore;
+  late TextEditingController minimumUser;
 
   late TextEditingController textEditingControllerInningType;
 
@@ -49,7 +50,10 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
         text: ldcController.modelLdc!.inningScore.toString());
     textEditingControllerInningType = TextEditingController(
         text: ldcController.modelLdc!.inningType.toString());
+
     textEditingControllerMatch = TextEditingController();
+    minimumUser = TextEditingController(
+        text: ldcController.modelLdc!.minUser.toString());
 
     matchController.getAllMatch();
   }
@@ -272,6 +276,7 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
                     description.text,
                     textEditingControllerInningType.text,
                     inningScore.text,
+                        minimumUser.toString(),
                   );
                   if (result['status'] == "1") {
                     showSnackBar(context, result['message']!);

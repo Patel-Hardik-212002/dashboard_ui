@@ -166,6 +166,7 @@ class _LastDigitWinningContestState extends State<LastDigitWinningContest> {
                                                       ? Colors.green
                                                       : Colors.red),
                                         )),
+
                                         DataCell(Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,

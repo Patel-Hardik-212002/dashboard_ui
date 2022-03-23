@@ -18,6 +18,8 @@ class ModelToss {
     this.winingAmount,
     this.description,
     this.tossResult,
+    this.createdOn,
+    this.status,
     this.team1,
     this.team2,
     this.matchType,
@@ -31,11 +33,13 @@ class ModelToss {
   String? entryFee;
   String? winingAmount;
   String? description;
-  dynamic? tossResult;
+  String? tossResult;
+  DateTime? createdOn;
+  String? status;
   String? team1;
   String? team2;
   String? matchType;
-  List<JoinList>? joinList;
+  List<dynamic>? joinList;
 
   factory ModelToss.fromJson(Map<String, dynamic> json) => ModelToss(
     tossWinnerContestId: json["toss_winner_contest_id"],
@@ -46,10 +50,12 @@ class ModelToss {
     winingAmount: json["wining_amount"],
     description: json["description"],
     tossResult: json["toss_result"],
+    createdOn: DateTime.parse(json["created_on"]),
+    status: json["status"],
     team1: json["team1"],
     team2: json["team2"],
     matchType: json["match_type"],
-    joinList: List<JoinList>.from(json["join_list"].map((x) => JoinList.fromJson(x))),
+    joinList: List<dynamic>.from(json["join_list"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -61,34 +67,11 @@ class ModelToss {
     "wining_amount": winingAmount,
     "description": description,
     "toss_result": tossResult,
+    "created_on": createdOn?.toIso8601String(),
+    "status": status,
     "team1": team1,
     "team2": team2,
     "match_type": matchType,
-    "join_list": List<dynamic>.from(joinList!.map((x) => x.toJson())),
+    "join_list": List<dynamic>.from(joinList!.map((x) => x)),
   };
 }
-
-class JoinList {
-  JoinList({
-    this.userId,
-    this.selectedTossResult,
-    this.name,
-  });
-
-  String? userId;
-  String? selectedTossResult;
-  String? name;
-
-  factory JoinList.fromJson(Map<String, dynamic> json) => JoinList(
-    userId: json["user_id"],
-    selectedTossResult: json["selected_toss_result"],
-    name: json["name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "user_id": userId,
-    "selected_toss_result": selectedTossResult,
-    "name": name,
-  };
-}
-

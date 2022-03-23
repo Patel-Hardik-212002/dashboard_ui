@@ -233,18 +233,37 @@ class _CreateTossContestState extends State<CreateTossContest> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () async {
-                  Map<String, String> result =
-                  await tossController.createContest(matchId,contestName.text,textEditingControllerEntryFee.text,winningAmount.text,description,inningType);
+    int totalAmount =
+    int.parse(textEditingControllerEntryFee.text.toString()) *
+    2;
 
-                  if (result['status'] == "1") {
-                    showSnackBar(context, result['message']!);
-                    tossController.getAllTossContest();
-                    Get.to(Home(
-                      position: 1,
-                    ));
-                  } else {
-                    showSnackBar(context, result['message']!);
-                  }
+    double minimumUser = int.parse(
+    winningAmount.text.toString()) /
+    int.parse(textEditingControllerEntryFee.text.toString())
+        .round();
+
+    if (int.parse(winningAmount.text.toString()) >
+    (int.parse(
+    textEditingControllerEntryFee.text.toString()) *
+    2)) {
+    showSnackBar(context,
+    "Winning amount must be less than $totalAmount or equal to $totalAmount");
+    } else {
+      Map<String, String> result =
+      await tossController.createContest(
+          matchId, contestName.text, textEditingControllerEntryFee.text,
+          winningAmount.text, description, inningType);
+
+      if (result['status'] == "1") {
+        showSnackBar(context, result['message']!);
+        tossController.getAllTossContest();
+        Get.to(Home(
+          position: 1,
+        ));
+      } else {
+        showSnackBar(context, result['message']!);
+      }
+    }
                 },
                 child: SizedBox(
                   width: 100,
