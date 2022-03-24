@@ -26,7 +26,7 @@ class TossController extends GetxController {
   Future<void> getAllTossContest() async {
     arrOfTossContest.clear();
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/toss/getalltosscontest'));
+        'https://codinghouse.in/battingraja/toss/getalltosscontest?type=WEB'));
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);

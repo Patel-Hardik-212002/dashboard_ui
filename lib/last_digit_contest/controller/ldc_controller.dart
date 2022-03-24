@@ -23,7 +23,7 @@ class LDCController extends GetxController {
     arrOfLDC.clear();
     isLoading.value=true;
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/ldc/getalllastdigitcontest'));
+        'https://codinghouse.in/battingraja/ldc/getalllastdigitcontest?type=WEB'));
 
     if (response.statusCode == 200) {
       isLoading.value=false;
