@@ -59,6 +59,7 @@ class _TossResultState extends State<TossResult> {
                       DataCell(Text((index + 1).toString())),
                       DataCell(Text(tossController
                           .arrOfTossContest[tossController.selectedContest]
+
                           .joinList![index]
                           .name ??
                           "-")),

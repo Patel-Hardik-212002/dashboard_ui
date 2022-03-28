@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 
 class AddMatch extends StatefulWidget {
@@ -22,8 +23,18 @@ class _AddMatchState extends State<AddMatch> {
   String team2 = "";
   String matchType = "";
   String startDate = "";
+  String startTime = "";
   String description = "";
   String status = "";
+
+
+  DateTime selectedDate = DateTime.now();
+
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+
+
+  TextEditingController timeController = TextEditingController();
+
 
   late TextEditingController textEditingControllerDateTime;
   late TextEditingController textEditingControllerTeam1;
@@ -49,6 +60,11 @@ class _AddMatchState extends State<AddMatch> {
     textEditingControllerDateTime = TextEditingController();
     textEditingControllerDesc = TextEditingController();
     textEditingControllerStatus = TextEditingController();
+    // _dateController.text = DateFormat.yMd().format(DateTime.now());
+    //
+    // _timeController.text = formatDate(
+    //     DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
+    //     [hh, ':', nn, " ", am]).toString();
   }
 
   @override
@@ -148,6 +164,38 @@ class _AddMatchState extends State<AddMatch> {
                           matchType = value;
                         },
                       ),
+                    )),
+                const Expanded(child: Text("")),
+                const Expanded(child: Text(""))
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _selectTime(context);
+
+                      },
+                      child: TextField(
+                        enabled: false,
+                        controller: timeController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Start Time',
+                        ),
+                        onChanged: (String value) {
+                          _selectTime(context);
+                          matchType = value;
+                          Text("${selectedTime.hour}:${selectedTime.minute}");
+
+                        },
+
+                      ),
+
                     )),
                 const Expanded(child: Text("")),
                 const Expanded(child: Text(""))
@@ -389,7 +437,7 @@ class _AddMatchState extends State<AddMatch> {
 
 
 
-  DateTime selectedDate = DateTime.now();
+  // DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -404,6 +452,22 @@ class _AddMatchState extends State<AddMatch> {
       });
     }
   }
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? timeOfDay = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+      initialEntryMode: TimePickerEntryMode.dial,
+
+    );
+    if(timeOfDay != null && timeOfDay != selectedTime)
+    {
+      setState(() {
+        // selectedTime = timeOfDay.hour+":"+timeOfDay.minute;
+        String selectedTime = timeOfDay.hour.toString()+":"+timeOfDay.minute.toString();
+        timeController.text= selectedTime;
+      });
+    }
+  }
 
   Future<int> updateMatch() async {
     http.Response response = await http.post(
@@ -414,6 +478,7 @@ class _AddMatchState extends State<AddMatch> {
         'team2': team2,
         'match_type': matchType,
         'start_date': startDate,
+        'start_time': startTime,
         'description': description,
         'status': status,
       },
