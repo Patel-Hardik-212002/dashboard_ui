@@ -4,7 +4,7 @@ import 'package:dashboard_ui/model/model_banner.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../model/model_last_digit_contest.dart';
+import '../model/model_last_digit_contest.dart';
 
 class BannerController extends GetxController {
 

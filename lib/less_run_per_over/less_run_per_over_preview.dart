@@ -1,9 +1,6 @@
-import 'package:dashboard_ui/less_run_per_over/less_run_per_over_controller.dart';
-import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
+import 'package:dashboard_ui/controller/less_run_per_over_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
 
 class LessRunPerOverResult extends StatefulWidget {
   const LessRunPerOverResult({Key? key}) : super(key: key);
@@ -14,18 +11,22 @@ class LessRunPerOverResult extends StatefulWidget {
 
 class _LessRunPerOverResultState extends State<LessRunPerOverResult> {
   LessRunPerOverController lessRunPerOverController = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           toolbarHeight: 100,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: (){
-              lessRunPerOverController.isViewVisible.value=false;
+            onPressed: () {
+              lessRunPerOverController.isViewVisible.value = false;
             },
-            icon: const Icon(Icons.arrow_back,color: Colors.black,),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
           ),
         ),
         body: ListView(
@@ -36,11 +37,10 @@ class _LessRunPerOverResultState extends State<LessRunPerOverResult> {
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                     letterSpacing: 2.0),
-                columns:  <DataColumn>[
+                columns: <DataColumn>[
                   DataColumn(
                     label: Text(
                       'No'.toUpperCase(),
-
                     ),
                   ),
                   DataColumn(
@@ -55,20 +55,25 @@ class _LessRunPerOverResultState extends State<LessRunPerOverResult> {
                   ),
                 ],
                 rows: List<DataRow>.generate(
-                    lessRunPerOverController.arrOfLessRunPerOver[lessRunPerOverController.selectedContest]
-                        .joinList!.length, (index) {
+                    lessRunPerOverController
+                        .arrOfLessRunPerOver[
+                            lessRunPerOverController.selectedContest]
+                        .joinList!
+                        .length, (index) {
                   return DataRow(
                     cells: <DataCell>[
                       DataCell(Text((index + 1).toString())),
                       DataCell(Text(lessRunPerOverController
-                          .arrOfLessRunPerOver[lessRunPerOverController.selectedContest]
-                          .joinList![index]
-                          .name ??
+                              .arrOfLessRunPerOver[
+                                  lessRunPerOverController.selectedContest]
+                              .joinList![index]
+                              .name ??
                           "-")),
                       DataCell(Text(lessRunPerOverController
-                          .arrOfLessRunPerOver[lessRunPerOverController.selectedContest]
-                          .joinList![index]
-                          .userSelectedDigit ??
+                              .arrOfLessRunPerOver[
+                                  lessRunPerOverController.selectedContest]
+                              .joinList![index]
+                              .userSelectedOver ??
                           "-")),
                     ],
                   );
@@ -76,12 +81,12 @@ class _LessRunPerOverResultState extends State<LessRunPerOverResult> {
           ],
         ));
   }
-  Widget HDivier(){
-    return Container(
-      width: 1,
-      height: 30,
-      color: Colors.white,
-    );
-  }
-
+  //
+  // Widget HDivier() {
+  //   return Container(
+  //     width: 1,
+  //     height: 30,
+  //     color: Colors.white,
+  //   );
+  // }
 }

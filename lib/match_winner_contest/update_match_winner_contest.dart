@@ -1,13 +1,13 @@
-import 'package:dashboard_ui/match/match_controller.dart';
-import 'package:dashboard_ui/match_winner_contest/match_winner_controller.dart';
-import 'package:dashboard_ui/toss_winner_contest/model_toss.dart';
-import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
+import 'package:dashboard_ui/controller/match_winner_controller.dart';
+import 'package:dashboard_ui/model/model_toss.dart';
+import 'package:dashboard_ui/controller/toss_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../../home.dart';
-import '../../utils.dart';
+import '../page/home.dart';
+import '../page/utils.dart';
 
 class UpdateMatchWinnerContest extends StatefulWidget {
   const UpdateMatchWinnerContest({Key? key}) : super(key: key);
@@ -32,6 +32,7 @@ class _UpdateMatchWinnerContestState extends State<UpdateMatchWinnerContest> {
   late TextEditingController matchWinnerId;
   late TextEditingController minimumUser;
   late TextEditingController userId;
+  late TextEditingController status;
 
   MatchController matchController = Get.find();
   MatchWinnerController matchWinnerController = Get.find();
@@ -52,6 +53,9 @@ class _UpdateMatchWinnerContestState extends State<UpdateMatchWinnerContest> {
         text: matchWinnerController.modelWinLoss!.winingTeam.toString());
     
     textEditingControllerMatch = TextEditingController();
+    status =
+        TextEditingController(text: matchWinnerController.modelWinLoss!.status.toString());
+
 
     matchController.getAllMatch();
   }
@@ -249,16 +253,50 @@ class _UpdateMatchWinnerContestState extends State<UpdateMatchWinnerContest> {
               height: 60,
               width: Get.width * 0.30,
               child: TextField(
-                controller: winingTeam,
+                maxLength: 4,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                controller: status,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter Score',
+                  hintText: 'Enter Status',
+                  labelText: 'Status'
                 ),
               ),
             ),
             const SizedBox(
               height: 16,
             ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+
+                controller: winingTeam,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter winner team',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            // SizedBox(
+            //   height: 60,
+            //   width: Get.width * 0.30,
+            //   child: TextField(
+            //     controller: winingTeam,
+            //     decoration: const InputDecoration(
+            //       border: OutlineInputBorder(),
+            //       hintText: 'Enter Score',
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 16,
+            // ),
             Material(
               borderRadius: BorderRadius.circular(50),
               color: Colors.black,
@@ -273,7 +311,7 @@ class _UpdateMatchWinnerContestState extends State<UpdateMatchWinnerContest> {
                     winningAmount.text,
                     description.text,
                     winingTeam.text,
-
+                    status.text.toString(),
                   );
                   if (result['status'] == "1") {
                     showSnackBar(context, result['message']!);

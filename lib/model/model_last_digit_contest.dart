@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-List<ModelLdc> modelLdcFromJson(String str) => List<ModelLdc>.from(json.decode(str).map((x) => ModelLdc.fromJson(x)));
+List<ModelDashboard> modelLdcFromJson(String str) => List<ModelDashboard>.from(json.decode(str).map((x) => ModelDashboard.fromJson(x)));
 
-String modelLdcToJson(List<ModelLdc> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String modelLdcToJson(List<ModelDashboard> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ModelLdc {
-  ModelLdc({
+class ModelDashboard {
+  ModelDashboard({
     this.lastDigitContestId,
     this.userId,
     this.matchId,
@@ -43,7 +43,7 @@ class ModelLdc {
   String? matchType;
   List<JoinList>? joinList;
 
-  factory ModelLdc.fromJson(Map<String, dynamic> json) => ModelLdc(
+  factory ModelDashboard.fromJson(Map<String, dynamic> json) => ModelDashboard(
     lastDigitContestId: json["last_digit_contest_id"],
     userId: json["user_id"],
     matchId: json["match_id"],

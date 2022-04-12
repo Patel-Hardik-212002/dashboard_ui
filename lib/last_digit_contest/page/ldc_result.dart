@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/ldc_controller.dart';
+import '../../controller/ldc_controller.dart';
 
 class LDCResult extends StatefulWidget {
   const LDCResult({Key? key}) : super(key: key);

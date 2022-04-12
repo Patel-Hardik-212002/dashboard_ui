@@ -11,8 +11,8 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:http/http.dart' as http;
 
 import 'add_banner.dart';
-import 'last_digit_contest/controller/banner_controller.dart';
-import 'model/model_banner.dart';
+import '../controller/banner_controller.dart';
+import '../model/model_banner.dart';
 
 class Banner1 extends StatefulWidget {
   const Banner1({Key? key}) : super(key: key);

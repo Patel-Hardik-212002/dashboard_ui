@@ -1,15 +1,11 @@
 import 'dart:convert';
 
-import 'package:dashboard_ui/toss_winner_contest/model_toss.dart';
-import 'package:flutter/material.dart';
+import 'package:dashboard_ui/model/model_less_run_per_over_contest.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import '../model/model_less_run_per_over_contest.dart';
 
-import '../../utils.dart';
-import 'model_match_winner.dart';
-
-
-class MatchWinnerController extends GetxController {
+class LessRunPerOverController extends GetxController {
 
   RxBool isAddVisible = false.obs;
   RxBool isUpdateVisible = false.obs;
@@ -18,21 +14,24 @@ class MatchWinnerController extends GetxController {
 
 
 
-  RxList<ModelWinLoss> arrOfMatchWinnerContest = <ModelWinLoss>[].obs;
+  RxList<ModelOver> arrOfLessRunPerOver = <ModelOver>[].obs;
   int selectedContest=-1;
 
-  ModelWinLoss? modelWinLoss;
+  ModelOver? modelOver;
 
-
-  Future<void> getAllWinLossContest() async {
-    arrOfMatchWinnerContest.clear();
+  Future<void> getAllOver() async {
+    arrOfLessRunPerOver.clear();
+    isLoading.value=true;
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/winloss/getallwinlosscontest?user_id=1'));
+        'https://codinghouse.in/battingraja/over/getallovercontest'));
 
     if (response.statusCode == 200) {
+      isLoading.value=false;
       var json = jsonDecode(response.body);
-      arrOfMatchWinnerContest.addAll((json as List)
-          .map((e) => ModelWinLoss.fromJson(e as Map<String, dynamic>)));
+      arrOfLessRunPerOver.addAll((json as List)
+          .map((e) => ModelOver.fromJson(e as Map<String, dynamic>)));
+    }else{
+      isLoading.value=false;
     }
   }
 
@@ -47,16 +46,15 @@ class MatchWinnerController extends GetxController {
 
     http.Response response = await http.post(
       Uri.parse(
-          'https://codinghouse.in/battingraja/winloss/creatwinlosscontest'),
+          'https://codinghouse.in/battingraja/over/createovercontest'),
       body: {
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
         'entry_fee': entryFee,
-        'wining_amount': winningAmount,
+        'winning_amount': winningAmount,
         'description': description,
-
-
+        'inning_type': inningType,
 
       },
     );
@@ -78,55 +76,63 @@ class MatchWinnerController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String winingTeam,
- ) async {
+      String inningType, String winningOver,String overScore,String status) async {
     Map<String, String> result = {};
-
+    isLoading.value=true;
     http.Response response = await http.post(
+
       Uri.parse(
-          'https://codinghouse.in/battingraja/winloss/updatewinlosscontest'),
+          'https://codinghouse.in/battingraja/over/updateovercontest'),
       body: {
-        'match_winner_contest_id': modelWinLoss!.matchWinnerContestId.toString(),
+         'less_run_per_over_contest_id': modelOver!.lessRunPerOverContestId.toString(),
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
         'entry_fee': entryFee,
-        'wining_amount': winningAmount,
+        'winning_amount': winningAmount,
         'description': description,
-        'match_winner_contest_id': modelWinLoss!.matchWinnerContestId!.toString(),
-        'wining_team': winingTeam,
-
+        'inning_type': inningType,
+        'winning_over': winningOver,
+        'over_score': overScore,
+        'status':status,
       },
     );
+
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       result['status'] = "1";
       result['message'] = json['message'];
-      getAllWinLossContest();
+      getAllOver();
+      isLoading.value=false;
+      return result;
+    } else  {
+      result['status'] = "0";
+      result['message'] = "Opps! Something went wrong";
+      isLoading.value=false;
+      return result;
+    }
+
+  }
+
+
+  Future<Map<String, String>> deleteContest(String id) async {
+    Map<String, String> result = {};
+
+    http.Response response = await http.post(
+      Uri.parse('https://codinghouse.in/battingraja/over/deletecontest'),
+      body: {'less_run_per_over_contest_id': id},
+    );
+
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      result['status'] = "1";
+      result['message'] = json['message'];
+      getAllOver();
       return result;
     } else {
       result['status'] = "0";
       result['message'] = "Opps! Something went wrong";
       return result;
-    }
-  }
-
-
-  Future<int> deleteContest(BuildContext context, String id) async {
-
-    http.Response response = await http.post(
-      Uri.parse('https://codinghouse.in/battingraja/winloss/deletecontest'),
-      body: {'match_winner_contest_id': id},
-    );
-
-    if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-      showSnackBar(context, json['message']);
-      getAllWinLossContest();
-      return 1;
-    } else {
-      showSnackBar(context, "Opps! Something went wrong");
-      return 0;
     }
   }
 }

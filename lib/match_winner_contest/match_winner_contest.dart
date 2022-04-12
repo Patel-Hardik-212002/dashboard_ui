@@ -3,15 +3,15 @@ import 'dart:js';
 
 import 'package:dashboard_ui/last_digit_contest/page/update_ldc_contest.dart';
 import 'package:dashboard_ui/match_winner_contest/match_winner_preview.dart';
-import 'package:dashboard_ui/update_match_winner_contest.dart';
-import 'package:dashboard_ui/utils.dart';
+import 'package:dashboard_ui/match_winner_contest/update_match_winner_contest.dart';
+import 'package:dashboard_ui/page/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'create_win_loss_contest.dart';
-import '../last_digit_contest/page/create_ldc_contest.dart';
-import 'match_winner_controller.dart';
+import '../last_digit_contest/create_ldc_contest.dart';
+import '../controller/match_winner_controller.dart';
 
 class MatchWinnerContest extends StatefulWidget {
   const MatchWinnerContest({Key? key}) : super(key: key);
@@ -22,6 +22,7 @@ class MatchWinnerContest extends StatefulWidget {
 
 class _MatchWinnerContestState extends State<MatchWinnerContest> {
   MatchWinnerController matchWinnerController = Get.find();
+
   @override
   void initState() {
     super.initState();
@@ -30,12 +31,13 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
     matchWinnerController.isViewVisible.value = false;
     matchWinnerController.getAllWinLossContest();
   }
-  @override
 
+  @override
   bool isAddVisible = false;
   bool isUpdateVisible = false;
+
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white30,
       body: Obx(() =>
           Padding(
@@ -69,10 +71,10 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
                                   "Match Type".toUpperCase())),
                           DataColumn(
                               label: Text(
-                                  "Contest Name".toUpperCase())),
+                                  "Contest\n Name".toUpperCase())),
                           DataColumn(
                               label: Text(
-                                  "Entry Fee".toUpperCase())),
+                                  "Entry\n Fee".toUpperCase())),
                           DataColumn(
                               label: Text("Winning Amount"
                                   .toUpperCase())),
@@ -80,7 +82,7 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
                               label: Text(
                                   "No Of Join".toUpperCase())),
                           DataColumn(
-                              label: Text("Available Slot"
+                              label: Text("Available\n Slot"
                                   .toUpperCase())),
                           DataColumn(
                               label:
@@ -152,37 +154,99 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
                                     .length
                                     .toString()))
                                 .toString())),
-                            DataCell(Text(
-                              (matchWinnerController
-                                  .arrOfMatchWinnerContest[
-                              index]
-                                  .winingTeam ==
-                                  null
-                                  ? "Upcoming"
-                                  : matchWinnerController
-                                  .arrOfMatchWinnerContest[
-                              index]
-                                  .winingTeam ==
-                                  "0"
-                                  ? "Upcoming"
-                                  : "Completed")
-                                  .toString()
-                                  .toUpperCase(),
-                              style: TextStyle(
-                                  color: matchWinnerController
-                                      .arrOfMatchWinnerContest[
-                                  index]
-                                      .winingTeam ==
-                                      null
-                                      ? Colors.green
-                                      : matchWinnerController
-                                      .arrOfMatchWinnerContest[
-                                  index]
-                                      .winingTeam ==
-                                      "0"
-                                      ? Colors.green
-                                      : Colors.red),
+                            // DataCell(Text(
+                            //   (matchWinnerController
+                            //       .arrOfMatchWinnerContest[
+                            //   index]
+                            //       .winingTeam ==
+                            //       null
+                            //       ? "Upcoming"
+                            //       : matchWinnerController
+                            //       .arrOfMatchWinnerContest[
+                            //   index]
+                            //       .winingTeam ==
+                            //       "0"
+                            //       ? "Upcoming"
+                            //       : "Completed")
+                            //       .toString()
+                            //       .toUpperCase(),
+                            //   style: TextStyle(
+                            //       color: matchWinnerController
+                            //           .arrOfMatchWinnerContest[
+                            //       index]
+                            //           .winingTeam ==
+                            //           null
+                            //           ? Colors.green
+                            //           : matchWinnerController
+                            //           .arrOfMatchWinnerContest[
+                            //       index]
+                            //           .winingTeam ==
+                            //           "0"
+                            //           ? Colors.green
+                            //           : Colors.red),
+                            // )),
+                            DataCell(Text(getStatus(matchWinnerController
+                                .arrOfMatchWinnerContest[
+                            index]
+                                .status.toString())
+                              ,
+                              // style: TextStyle(
+                              //     color: matchWinnerController
+                              //         .arrOfMatchWinnerContest[
+                              //     index]
+                              //         .status ==
+                              //         "1"
+                              //         ? Colors.black
+                              //         : matchWinnerController
+                              //         .arrOfMatchWinnerContest[
+                              //     index]
+                              //         .status ==
+                              //         "2"
+                              //         ? Colors.green
+                              //         : matchWinnerController
+                              //         .arrOfMatchWinnerContest[
+                              //     index]
+                              //         .status ==
+                              //         "3" ? Colors.grey : Colors.red),
                             )),
+                            // DataCell(Text(
+                            //   matchWinnerController
+                            //       .arrOfMatchWinnerContest[
+                            //   index]
+                            //       .winingTeam ==
+                            //       "1"
+                            //       ? "Upcoming"
+                            //       : matchWinnerController
+                            //       .arrOfMatchWinnerContest[
+                            //   index]
+                            //       .winingTeam ==
+                            //       "2"
+                            //       ? "Ongoing"
+                            //       : matchWinnerController
+                            //       .arrOfMatchWinnerContest[
+                            //   index]
+                            //       .winingTeam ==
+                            //       "3"?"Completed":"Cancel"
+                            //   ,
+                            //   style: TextStyle(
+                            //       color: matchWinnerController
+                            //           .arrOfMatchWinnerContest[
+                            //       index]
+                            //           .winingTeam ==
+                            //           "1"
+                            //           ? Colors.black
+                            //           : matchWinnerController
+                            //           .arrOfMatchWinnerContest[
+                            //       index]
+                            //           .winingTeam ==
+                            //           "2"
+                            //           ? Colors.green
+                            //           : matchWinnerController
+                            //           .arrOfMatchWinnerContest[
+                            //       index]
+                            //           .winingTeam ==
+                            //           "3"?Colors.grey:Colors.red),
+                            // )),
                             DataCell(Row(
                               mainAxisAlignment:
                               MainAxisAlignment.end,
@@ -280,7 +344,8 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
 
                   ])
           )),
-      floatingActionButton: Obx(() => matchWinnerController.isAddVisible.value
+      floatingActionButton: Obx(() =>
+      matchWinnerController.isAddVisible.value
           ? const SizedBox.shrink()
           : Container(
         margin: const EdgeInsets.all(25),
@@ -296,11 +361,7 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
   }
 
 
-
-
-
-
-  Future showConfirmDelete(BuildContext context,int index){
+  Future showConfirmDelete(BuildContext context, int index) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -310,7 +371,9 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
           actions: <Widget>[
             FlatButton(
                 onPressed: () {
-                  matchWinnerController.deleteContest(context, matchWinnerController.arrOfMatchWinnerContest[index].matchWinnerContestId.toString());
+                  matchWinnerController.deleteContest(context,
+                      matchWinnerController.arrOfMatchWinnerContest[index]
+                          .matchWinnerContestId.toString());
                   Navigator.of(context).pop(true);
                 },
                 child: const Text("DELETE")
@@ -327,28 +390,45 @@ class _MatchWinnerContestState extends State<MatchWinnerContest> {
     );
   }
 
-  // Future<int> addMatch() async {
-  //   http.Response response = await http.post(
-  //     Uri.parse('https://codinghouse.in/battingraja/match/addmatch'),
-  //     body: {
-  //       'team1': team1,
-  //       'team2': team2,
-  //       'match_type': matchType,
-  //       'start_date': startDate,
-  //       'description': description,
-  //       'status': status,
-  //     },
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     var json = jsonDecode(response.body);
-  //     showSnackBar(context, json['message']);
-  //     return 1;
-  //   } else {
-  //     showSnackBar(context, "Opps! Something went wrong");
-  //     return 0;
-  //   }
-  // }
+  String getStatus(String status) {
+    debugPrint(status.toString());
+    String returnStatus="";
+    if(status ==
+        "1") {
+      returnStatus="Upcoming";
+    } else if (status == "2") {
+      returnStatus="Ongoing";
+    } else if (status == "3") {
+      returnStatus="Complete";
+    }else{
+      returnStatus="Cancel";
+    }
+    return returnStatus;
+
+  }
+
+// Future<int> addMatch() async {
+//   http.Response response = await http.post(
+//     Uri.parse('https://codinghouse.in/battingraja/match/addmatch'),
+//     body: {
+//       'team1': team1,
+//       'team2': team2,
+//       'match_type': matchType,
+//       'start_date': startDate,
+//       'description': description,
+//       'status': status,
+//     },
+//   );
+//
+//   if (response.statusCode == 200) {
+//     var json = jsonDecode(response.body);
+//     showSnackBar(context, json['message']);
+//     return 1;
+//   } else {
+//     showSnackBar(context, "Opps! Something went wrong");
+//     return 0;
+//   }
+// }
 
 
 }

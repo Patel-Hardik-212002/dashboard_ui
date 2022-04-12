@@ -1,14 +1,14 @@
 import 'dart:js';
 
 import 'package:dashboard_ui/last_digit_contest/page/update_ldc_contest.dart';
-import 'package:dashboard_ui/update_less_run_per_over_contest.dart';
+import 'package:dashboard_ui/less_run_per_over/update_less_run_per_over_contest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'create_less_run_per_over_contest.dart';
-import '../last_digit_contest/page/create_ldc_contest.dart';
-import 'less_run_per_over_controller.dart';
+import '../last_digit_contest/create_ldc_contest.dart';
+import '../controller/less_run_per_over_controller.dart';
 import 'less_run_per_over_preview.dart';
 
 class LessRunPerOver extends StatefulWidget {
@@ -44,7 +44,7 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
                   : lessRunPerOverController.isUpdateVisible.value
                   ? const UpdateLessRunPerOverContest()
                   : lessRunPerOverController.isViewVisible.value
-                  ? LessRunPerOverResult()
+                  ? const LessRunPerOverResult()
                   : ListView(
                   children: [
                     Container(
@@ -68,18 +68,18 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
                                   "Match Type".toUpperCase())),
                           DataColumn(
                               label: Text(
-                                  "Contest Name".toUpperCase())),
+                                  "Contest\nName".toUpperCase())),
                           DataColumn(
                               label: Text(
-                                  "Entry Fee".toUpperCase())),
+                                  "Entry\nFee".toUpperCase())),
                           DataColumn(
-                              label: Text("Winning Amount"
+                              label: Text("Winning\nAmount"
                                   .toUpperCase())),
                           DataColumn(
                               label: Text(
                                   "No Of Join".toUpperCase())),
                           DataColumn(
-                              label: Text("Available Slot"
+                              label: Text("Available\nSlot"
                                   .toUpperCase())),
                           DataColumn(
                               label:
@@ -140,47 +140,57 @@ class _LessRunPerOverState extends State<LessRunPerOver> {
                                 .toString())),
                             DataCell(Text((lessRunPerOverController
                                 .arrOfLessRunPerOver[index]
+                                .joinList==null?"-":lessRunPerOverController
+                                .arrOfLessRunPerOver[index]
                                 .joinList!
                                 .length
                                 .toString())
                                 .toString())),
-                            DataCell(Text((10 -
+                            DataCell(Text((20 -
                                 int.parse(lessRunPerOverController
                                     .arrOfLessRunPerOver[index]
                                     .joinList!
                                     .length
                                     .toString()))
                                 .toString())),
+
                             DataCell(Text(
-                              (lessRunPerOverController
+                              lessRunPerOverController
                                   .arrOfLessRunPerOver[
                               index]
-                                  .winningOver ==
-                                  null
+                                  .status ==
+                                  "1"
                                   ? "Upcoming"
                                   : lessRunPerOverController
                                   .arrOfLessRunPerOver[
                               index]
-                                  .winningOver ==
-                                  "0"
-                                  ? "Upcoming"
-                                  : "Completed")
-                                  .toString()
-                                  .toUpperCase(),
+                                  .status ==
+                                  "2"
+                                  ? "Ongoing"
+                                  : lessRunPerOverController
+                                  .arrOfLessRunPerOver[
+                              index]
+                                  .status ==
+                                  "3"?"Completed":"Cancel"
+                              ,
                               style: TextStyle(
                                   color: lessRunPerOverController
                                       .arrOfLessRunPerOver[
                                   index]
-                                      .winningOver ==
-                                      null
+                                      .status ==
+                                      "1"
+                                      ? Colors.black
+                                      : lessRunPerOverController
+                                      .arrOfLessRunPerOver[
+                                  index]
+                                      .status ==
+                                      "2"
                                       ? Colors.green
                                       : lessRunPerOverController
                                       .arrOfLessRunPerOver[
                                   index]
-                                      .winningOver ==
-                                      "0"
-                                      ? Colors.green
-                                      : Colors.red),
+                                      .status ==
+                                      "3"?Colors.grey:Colors.red),
                             )),
                             DataCell(Row(
                               mainAxisAlignment:

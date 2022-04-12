@@ -1,11 +1,11 @@
-import 'package:dashboard_ui/match/match_controller.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../../home.dart';
-import '../../utils.dart';
-import '../controller/ldc_controller.dart';
+import '../../page/home.dart';
+import '../../page/utils.dart';
+import '../../controller/ldc_controller.dart';
 
 class UpdateLDContest extends StatefulWidget {
   const UpdateLDContest({Key? key}) : super(key: key);
@@ -27,6 +27,7 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
   late TextEditingController contestName;
   late TextEditingController description;
   late TextEditingController inningScore;
+  late TextEditingController status;
   late TextEditingController minimumUser;
 
   late TextEditingController textEditingControllerInningType;
@@ -52,9 +53,10 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
         text: ldcController.modelLdc!.inningType.toString());
 
     textEditingControllerMatch = TextEditingController();
-    minimumUser = TextEditingController(
-        text: ldcController.modelLdc!.minUser.toString());
-
+    minimumUser =
+        TextEditingController(text: ldcController.modelLdc!.minUser.toString());
+    status =
+        TextEditingController(text: ldcController.modelLdc!.status.toString());
     matchController.getAllMatch();
   }
 
@@ -251,7 +253,29 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
               height: 60,
               width: Get.width * 0.30,
               child: TextField(
+                maxLength: 1,
+                controller: status,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter status',
+                    labelText: 'update status'),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+                maxLength: 4,
                 controller: inningScore,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter Score',
@@ -276,7 +300,8 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
                     description.text,
                     textEditingControllerInningType.text,
                     inningScore.text,
-                        minimumUser.toString(),
+                    minimumUser.toString(),
+                    status.text.toString(),
                   );
                   if (result['status'] == "1") {
                     showSnackBar(context, result['message']!);

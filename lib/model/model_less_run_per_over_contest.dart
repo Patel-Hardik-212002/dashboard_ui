@@ -33,15 +33,15 @@ class ModelOver {
   String? contestName;
   String? entryFee;
   String? winningAmount;
-  String?description;
+  String? description;
   String? inningType;
-  dynamic? winningOver;
-  dynamic? overScore;
+  String? winningOver;
+  String? overScore;
   String? status;
   String? team1;
   String? team2;
   String? matchType;
-  List<dynamic>? joinList;
+  List<JoinList>? joinList;
 
   factory ModelOver.fromJson(Map<String, dynamic> json) => ModelOver(
     lessRunPerOverContestId: json["less_run_per_over_contest_id"],
@@ -52,13 +52,13 @@ class ModelOver {
     winningAmount: json["winning_amount"],
     description: json["description"],
     inningType: json["inning_type"],
-    winningOver: json["winning_over"],
-    overScore: json["over_score"],
+    winningOver: json["winning_over"] == null ? null : json["winning_over"],
+    overScore: json["over_score"] == null ? null : json["over_score"],
     status: json["status"],
     team1: json["team1"],
     team2: json["team2"],
     matchType: json["match_type"],
-    joinList: List<dynamic>.from(json["join_list"].map((x) => x)),
+    joinList: List<JoinList>.from(json["join_list"].map((x) => JoinList.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -70,12 +70,39 @@ class ModelOver {
     "winning_amount": winningAmount,
     "description": description,
     "inning_type": inningType,
-    "winning_over": winningOver,
-    "over_score": overScore,
+    "winning_over": winningOver == null ? null : winningOver,
+    "over_score": overScore == null ? null : overScore,
     "status": status,
     "team1": team1,
     "team2": team2,
     "match_type": matchType,
-    "join_list": List<dynamic>.from(joinList!.map((x) => x)),
+    "join_list": List<dynamic>.from(joinList!.map((x) => x.toJson())),
   };
 }
+
+class JoinList {
+  JoinList({
+    this.userId,
+    this.userSelectedOver,
+    this.name,
+  });
+
+  String? userId;
+  String? userSelectedOver;
+  String? name;
+
+  factory JoinList.fromJson(Map<String, dynamic> json) => JoinList(
+    userId: json["user_id"],
+    userSelectedOver: json["user_selected_over"],
+    name: json["name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "user_id": userId,
+    "user_selected_over": userSelectedOver,
+    "name": name,
+  };
+}
+
+
+

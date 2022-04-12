@@ -1,4 +1,4 @@
-import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
+import 'package:dashboard_ui/controller/toss_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

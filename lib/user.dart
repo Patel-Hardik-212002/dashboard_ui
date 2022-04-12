@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dashboard_ui/model_user.dart';
+import 'package:dashboard_ui/model/model_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';

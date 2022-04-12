@@ -1,4 +1,4 @@
-import 'package:dashboard_ui/banner.dart';
+import 'package:dashboard_ui/add_banner/banner.dart';
 import 'package:dashboard_ui/last_digit_contest/page/last_digit_contest_list.dart';
 import 'package:dashboard_ui/player_selected_contest.dart';
 import 'package:dashboard_ui/tab/dashboard.dart';
@@ -7,9 +7,9 @@ import 'package:dashboard_ui/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'less_run_per_over/less_run_per_over_contest.dart';
-import 'match/add_match.dart';
-import 'match_winner_contest/match_winner_contest.dart';
+import '../less_run_per_over/less_run_per_over_contest.dart';
+import '../match/add_match.dart';
+import '../match_winner_contest/match_winner_contest.dart';
 
 class Home extends StatefulWidget {
   int pos = 0;
@@ -208,38 +208,38 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 const Divider(
                   height: 1,
                 ),
-                Container(
-                  width: 250,
-                  height: 50,
-                  color:
-                      selectedMenuPosition == 3 ? Colors.yellow : Colors.white,
-                  padding: const EdgeInsets.only(left: 16),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedMenuPosition = 3;
-                        tabController.index = 3;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Player Select Contest".toUpperCase(),
-                            style: menuTextStyle,
-                          ),
-                        ),
-                        const Icon(
-                          Icons.navigate_next,
-                          color: Colors.black,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(
-                  height: 1,
-                ),
+                // Container(
+                //   width: 250,
+                //   height: 50,
+                //   color:
+                //       selectedMenuPosition == 3 ? Colors.yellow : Colors.white,
+                //   padding: const EdgeInsets.only(left: 16),
+                //   child: InkWell(
+                //     onTap: () {
+                //       setState(() {
+                //         selectedMenuPosition = 3;
+                //         tabController.index = 3;
+                //       });
+                //     },
+                //     child: Row(
+                //       children: [
+                //         Expanded(
+                //           child: Text(
+                //             "Player Select Contest".toUpperCase(),
+                //             style: menuTextStyle,
+                //           ),
+                //         ),
+                //         const Icon(
+                //           Icons.navigate_next,
+                //           color: Colors.black,
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // const Divider(
+                //   height: 1,
+                // ),
                 Container(
                   width: 250,
                   height: 50,
@@ -304,38 +304,38 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 const Divider(
                   height: 1,
                 ),
-                Container(
-                  width: 250,
-                  height: 50,
-                  color:
-                      selectedMenuPosition == 8 ? Colors.yellow : Colors.white,
-                  padding: const EdgeInsets.only(left: 16),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedMenuPosition = 8;
-                        tabController.index = 8;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "banner".toUpperCase(),
-                            style: menuTextStyle,
-                          ),
-                        ),
-                        const Icon(
-                          Icons.navigate_next,
-                          color: Colors.black,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(
-                  height: 1,
-                ),
+                // Container(
+                //   width: 250,
+                //   height: 50,
+                //   color:
+                //       selectedMenuPosition == 8 ? Colors.yellow : Colors.white,
+                //   padding: const EdgeInsets.only(left: 16),
+                //   child: InkWell(
+                //     onTap: () {
+                //       setState(() {
+                //         selectedMenuPosition = 8;
+                //         tabController.index = 8;
+                //       });
+                //     },
+                //     child: Row(
+                //       children: [
+                //         Expanded(
+                //           child: Text(
+                //             "banner".toUpperCase(),
+                //             style: menuTextStyle,
+                //           ),
+                //         ),
+                //         const Icon(
+                //           Icons.navigate_next,
+                //           color: Colors.black,
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // const Divider(
+                //   height: 1,
+                // ),
                 Container(
                   width: 250,
                   height: 50,
@@ -388,7 +388,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               MatchWinnerContest(),
               AddMatch(),
               User(),
-              Banner1(),
+               Banner1(),
 
             ],
           ))

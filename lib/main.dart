@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'binding_controller.dart';
-import 'splash.dart';
+import 'controller/binding_controller.dart';
+import 'page/splash.dart';
 
 void main() {
   runApp(const MyApp());

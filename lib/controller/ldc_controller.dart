@@ -1,12 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../model/model_last_digit_contest.dart';
-import 'model_less_run_per_over_contest.dart';
+import '../model/model_last_digit_contest.dart';
 
-class LessRunPerOverController extends GetxController {
+class LDCController extends GetxController {
 
   RxBool isAddVisible = false.obs;
   RxBool isUpdateVisible = false.obs;
@@ -15,22 +15,23 @@ class LessRunPerOverController extends GetxController {
 
 
 
-  RxList<ModelOver> arrOfLessRunPerOver = <ModelOver>[].obs;
+  RxList<ModelDashboard> arrOfLDC = <ModelDashboard>[].obs;
   int selectedContest=-1;
 
-  ModelOver? modelOver;
+  ModelDashboard? modelLdc;
 
-  Future<void> getAllOver() async {
-    arrOfLessRunPerOver.clear();
+  Future<void> getAllLDC() async {
+    arrOfLDC.clear();
     isLoading.value=true;
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/over/getallovercontest?user_id=1'));
+        'https://codinghouse.in/battingraja/ldc/getalllastdigitcontest?type=WEB'));
 
     if (response.statusCode == 200) {
       isLoading.value=false;
       var json = jsonDecode(response.body);
-      arrOfLessRunPerOver.addAll((json as List)
-          .map((e) => ModelOver.fromJson(e as Map<String, dynamic>)));
+      arrOfLDC.addAll((json as List)
+          .map((e) => ModelDashboard.fromJson(e as Map<String, dynamic>)));
+      print("");
     }else{
       isLoading.value=false;
     }
@@ -42,12 +43,14 @@ class LessRunPerOverController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String inningType) async {
+      String inningType,
+      String minimumUser,
+      ) async {
     Map<String, String> result = {};
 
     http.Response response = await http.post(
       Uri.parse(
-          'https://codinghouse.in/battingraja/over/createovercontest'),
+          'https://codinghouse.in/battingraja/ldc/createlastdigitcontest'),
       body: {
         'user_id': "1",
         'match_id': matchId,
@@ -56,6 +59,7 @@ class LessRunPerOverController extends GetxController {
         'winning_amount': winningAmount,
         'description': description,
         'inning_type': inningType,
+        'minimum_user': minimumUser,
       },
     );
     if (response.statusCode == 200) {
@@ -76,15 +80,17 @@ class LessRunPerOverController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String inningType, String winningOver,String overScore) async {
+      String inningType, String inningScore,String minimumUser,String status) async {
     Map<String, String> result = {};
     isLoading.value=true;
+    debugPrint("Status Value: ="+status);
+
+
     http.Response response = await http.post(
 
-      Uri.parse(
-          'https://codinghouse.in/battingraja/over/updateovercontest'),
+      Uri.parse('https://codinghouse.in/battingraja/ldc/updatelastdigitcontest'),
       body: {
-         'less_run_per_over_contest_id': modelOver!.lessRunPerOverContestId.toString(),
+        'last_digit_contest_id': modelLdc!.lastDigitContestId.toString(),
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
@@ -92,16 +98,26 @@ class LessRunPerOverController extends GetxController {
         'winning_amount': winningAmount,
         'description': description,
         'inning_type': inningType,
-        'winning_over': winningOver,
-        'over_score': overScore,
+        'inning_score': inningScore,
+        'minimum_user': minimumUser,
+        'status':status,
       },
     );
 
+    debugPrint("Response $response");
+
     if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-      result['status'] = "1";
-      result['message'] = json['message'];
-      getAllOver();
+      var json = jsonDecode(response.body.toString());
+      if(json['status']==1){
+        result['status'] = "1";
+        result['message'] = json['message'];
+        getAllLDC();
+      }else{
+        result['status'] = "0";
+        result['message'] = json['message'];
+      }
+
+
       isLoading.value=false;
       return result;
     } else  {
@@ -114,19 +130,19 @@ class LessRunPerOverController extends GetxController {
   }
 
 
-  Future<Map<String, String>> deleteContest(String id) async {
+  Future<Map<String, String>> deleteContest(String matchId) async {
     Map<String, String> result = {};
 
     http.Response response = await http.post(
-      Uri.parse('https://codinghouse.in/battingraja/over/deletecontest'),
-      body: {'less_run_per_over_contest_id': id},
+      Uri.parse('https://codinghouse.in/battingraja/user/deletecontest'),
+      body: {'match_id': matchId},
     );
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       result['status'] = "1";
       result['message'] = json['message'];
-      getAllOver();
+      getAllLDC();
       return result;
     } else {
       result['status'] = "0";

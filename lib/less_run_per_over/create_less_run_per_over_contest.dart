@@ -1,9 +1,9 @@
-import 'package:dashboard_ui/home.dart';
-import 'package:dashboard_ui/last_digit_contest/controller/ldc_controller.dart';
-import 'package:dashboard_ui/less_run_per_over/less_run_per_over_controller.dart';
-import 'package:dashboard_ui/match/match_controller.dart';
-import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
-import 'package:dashboard_ui/utils.dart';
+import 'package:dashboard_ui/page/home.dart';
+import 'package:dashboard_ui/controller/ldc_controller.dart';
+import 'package:dashboard_ui/controller/less_run_per_over_controller.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
+import 'package:dashboard_ui/controller/toss_controller.dart';
+import 'package:dashboard_ui/page/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:dashboard_ui/model/model_toss.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../model/model_last_digit_contest.dart';
+import '../page/utils.dart';
 
-class LDCController extends GetxController {
+
+class TossController extends GetxController {
 
   RxBool isAddVisible = false.obs;
   RxBool isUpdateVisible = false.obs;
@@ -14,25 +17,21 @@ class LDCController extends GetxController {
 
 
 
-  RxList<ModelLdc> arrOfLDC = <ModelLdc>[].obs;
+  RxList<ModelToss> arrOfTossContest = <ModelToss>[].obs;
   int selectedContest=-1;
 
-  ModelLdc? modelLdc;
+  ModelToss? modelToss;
 
-  Future<void> getAllLDC() async {
-    arrOfLDC.clear();
-    isLoading.value=true;
+
+  Future<void> getAllTossContest() async {
+    arrOfTossContest.clear();
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/ldc/getalllastdigitcontest?type=WEB'));
+        'https://codinghouse.in/battingraja/toss/getalltosscontest?type=WEB'));
 
     if (response.statusCode == 200) {
-      isLoading.value=false;
       var json = jsonDecode(response.body);
-      arrOfLDC.addAll((json as List)
-          .map((e) => ModelLdc.fromJson(e as Map<String, dynamic>)));
-      print("");
-    }else{
-      isLoading.value=false;
+      arrOfTossContest.addAll((json as List)
+          .map((e) => ModelToss.fromJson(e as Map<String, dynamic>)));
     }
   }
 
@@ -42,23 +41,21 @@ class LDCController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String inningType,
-      String minimumUser,
-      ) async {
+      String inningType) async {
     Map<String, String> result = {};
 
     http.Response response = await http.post(
       Uri.parse(
-          'https://codinghouse.in/battingraja/ldc/createlastdigitcontest'),
+          'https://codinghouse.in/battingraja/toss/createtosscontest'),
       body: {
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
         'entry_fee': entryFee,
-        'winning_amount': winningAmount,
+        'wining_amount': winningAmount,
         'description': description,
         'inning_type': inningType,
-        'minimum_user': minimumUser,
+
       },
     );
     if (response.statusCode == 200) {
@@ -79,62 +76,53 @@ class LDCController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-      String inningType, String inningScore,String minimumUser,) async {
+  String tossResult,String status) async {
     Map<String, String> result = {};
-    isLoading.value=true;
-    http.Response response = await http.post(
 
+    http.Response response = await http.post(
       Uri.parse(
-          'https://codinghouse.in/battingraja/ldc/updatelastdigitcontest'),
+          'https://codinghouse.in/battingraja/toss/updatetosscontest'),
       body: {
-        'last_digit_contest_id': modelLdc!.lastDigitContestId.toString(),
+        'toss_winner_contest_id': modelToss!.tossWinnerContestId.toString(),
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
         'entry_fee': entryFee,
-        'winning_amount': winningAmount,
+        'wining_amount': winningAmount,
         'description': description,
-        'inning_type': inningType,
-        'inning_score': inningScore,
-        'minimum_user': minimumUser,
+        'toss_result': tossResult,
+        'status':status,
+
       },
     );
-
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       result['status'] = "1";
       result['message'] = json['message'];
-      getAllLDC();
-      isLoading.value=false;
-      return result;
-    } else  {
-      result['status'] = "0";
-      result['message'] = "Opps! Something went wrong";
-      isLoading.value=false;
-      return result;
-    }
-
-  }
-
-
-  Future<Map<String, String>> deleteContest(String matchId) async {
-    Map<String, String> result = {};
-
-    http.Response response = await http.post(
-      Uri.parse('https://codinghouse.in/battingraja/user/deletecontest'),
-      body: {'match_id': matchId},
-    );
-
-    if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-      result['status'] = "1";
-      result['message'] = json['message'];
-      getAllLDC();
+      getAllTossContest();
       return result;
     } else {
       result['status'] = "0";
       result['message'] = "Opps! Something went wrong";
       return result;
+    }
+  }
+
+
+  Future<int> deleteContest(BuildContext context, String id) async {
+
+    http.Response response = await http.post(
+      Uri.parse('https://codinghouse.in/battingraja/toss/deletecontest'),
+      body: {'toss_winner_contest_id': id},
+    );
+
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      showSnackBar(context, json['message']);
+      return 1;
+    } else {
+      showSnackBar(context, "Opps! Something went wrong");
+      return 0;
     }
   }
 }

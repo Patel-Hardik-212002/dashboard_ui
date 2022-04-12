@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:js';
-import 'package:dashboard_ui/toss_preview.dart';
-import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
+import 'package:dashboard_ui/toss_winner_contest/toss_preview.dart';
+import 'package:dashboard_ui/controller/toss_controller.dart';
 import 'package:dashboard_ui/toss_winner_contest/update_toss_contest.dart';
 import 'package:http/http.dart' as http;
 import 'package:dashboard_ui/last_digit_contest/page/update_ldc_contest.dart';
@@ -9,9 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../last_digit_contest/page/create_ldc_contest.dart';
+import '../last_digit_contest/create_ldc_contest.dart';
 import '../last_digit_contest/page/ldc_result.dart';
-import '../utils.dart';
+import '../page/utils.dart';
 import 'create_toss_contest.dart';
 
 class TossWinnerContest extends StatefulWidget {
@@ -69,18 +69,18 @@ class _TossWinnerContestState extends State<TossWinnerContest> {
                                                 "Match Type".toUpperCase())),
                                         DataColumn(
                                             label: Text(
-                                                "Contest Name".toUpperCase())),
+                                                "Contest\nName".toUpperCase())),
                                         DataColumn(
                                             label: Text(
-                                                "Entry Fee".toUpperCase())),
+                                                "Entry\nFee".toUpperCase())),
                                         DataColumn(
-                                            label: Text("Winning Amount"
+                                            label: Text("Wining\nAmount"
                                                 .toUpperCase())),
                                         DataColumn(
                                             label: Text(
                                                 "No Of Join".toUpperCase())),
                                         DataColumn(
-                                            label: Text("Available Slot"
+                                            label: Text("Available\nSlot"
                                                 .toUpperCase())),
                                         DataColumn(
                                             label:
@@ -145,7 +145,7 @@ class _TossWinnerContestState extends State<TossWinnerContest> {
                                                   .length
                                                   .toString())
                                               .toString())),
-                                          DataCell(Text((10 -
+                                          DataCell(Text((2 -
                                                   int.parse(tossController
                                                       .arrOfTossContest[index]
                                                       .joinList!

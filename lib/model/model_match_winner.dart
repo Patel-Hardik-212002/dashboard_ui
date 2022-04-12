@@ -21,6 +21,7 @@ class ModelWinLoss {
     this.team1,
     this.team2,
     this.matchType,
+    this.status,
     this.joinList,
   });
 
@@ -35,6 +36,7 @@ class ModelWinLoss {
   String? team1;
   String? team2;
   String? matchType;
+  String? status;
   List<JoinList>? joinList;
 
   factory ModelWinLoss.fromJson(Map<String, dynamic> json) => ModelWinLoss(
@@ -49,6 +51,7 @@ class ModelWinLoss {
     team1: json["team1"],
     team2: json["team2"],
     matchType: json["match_type"],
+    status: json["status"],
     joinList: List<JoinList>.from(json["join_list"].map((x) => JoinList.fromJson(x))),
   );
 
@@ -64,6 +67,7 @@ class ModelWinLoss {
     "team1": team1,
     "team2": team2,
     "match_type": matchType,
+    "status":status,
     "join_list": List<dynamic>.from(joinList!.map((x) => x.toJson())),
   };
 }

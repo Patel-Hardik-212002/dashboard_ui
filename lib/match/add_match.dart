@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:dashboard_ui/match/match_controller.dart';
-import 'package:dashboard_ui/match/model_match.dart';
-import 'package:dashboard_ui/utils.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
+import 'package:dashboard_ui/page/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 
 class AddMatch extends StatefulWidget {
@@ -18,6 +16,7 @@ class AddMatch extends StatefulWidget {
 }
 
 class _AddMatchState extends State<AddMatch> {
+   
   String matchId = "";
   String team1 = "";
   String team2 = "";
@@ -30,7 +29,7 @@ class _AddMatchState extends State<AddMatch> {
 
   DateTime selectedDate = DateTime.now();
 
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
 
 
   TextEditingController timeController = TextEditingController();
@@ -76,7 +75,7 @@ class _AddMatchState extends State<AddMatch> {
       // ),
       body: Obx(()=>isAddVisible
           ? Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
             const SizedBox(
@@ -250,13 +249,13 @@ class _AddMatchState extends State<AddMatch> {
                 const Expanded(child: Text(""))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             FlatButton(
               child: Text(
                 isUpdateVisible ? 'Update Match' : 'Add Match',
-                style: TextStyle(fontSize: 16.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
               color: Colors.blueAccent,
               textColor: Colors.white,
@@ -291,11 +290,11 @@ class _AddMatchState extends State<AddMatch> {
         children: [
           Container(
             height: 50,
-            padding: EdgeInsets.all(4),
+            padding: const EdgeInsets.all(4),
             color: Colors.black,
-            margin: EdgeInsets.only(bottom: 15),
+            margin: const EdgeInsets.only(bottom: 15),
             child: Row(
-              children: [
+              children: const [
                 Expanded(
                     child: Text(
                       "Match",
@@ -323,14 +322,14 @@ class _AddMatchState extends State<AddMatch> {
             padding: const EdgeInsets.all(0.0),
             child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: matchController.arrOfMatch.length,
                 itemBuilder: (context, index) {
                   return Container(
                     height: 50,
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     color: Colors.white,
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: const EdgeInsets.only(bottom: 15),
                     child: Row(
                       children: [
                         Expanded(
@@ -356,15 +355,15 @@ class _AddMatchState extends State<AddMatch> {
                                       isAddVisible = true;
                                       setState(() {});
                                     },
-                                    icon: Icon(Icons.edit)),
-                                SizedBox(
+                                    icon: const Icon(Icons.edit)),
+                                const SizedBox(
                                   width: 16,
                                 ),
                                 IconButton(
                                     onPressed: () async {
                                       showConfirmDelete(context,index);
                                                                          },
-                                    icon: Icon(Icons.delete))
+                                    icon: const Icon(Icons.delete))
                               ],
                             )),
                       ],
@@ -375,7 +374,7 @@ class _AddMatchState extends State<AddMatch> {
         ],
       )),
       floatingActionButton: Container(
-        margin: EdgeInsets.all(25),
+        margin: const EdgeInsets.all(25),
         child: FloatingActionButton(
           onPressed: () {
             setState(() {
@@ -395,8 +394,8 @@ class _AddMatchState extends State<AddMatch> {
             });
           },
           child: isAddVisible || isUpdateVisible
-              ? Icon(Icons.arrow_back_rounded)
-              : Icon(Icons.add),
+              ? const Icon(Icons.arrow_back_rounded)
+              : const Icon(Icons.add),
         ),
       ),
     );
@@ -462,9 +461,8 @@ class _AddMatchState extends State<AddMatch> {
     if(timeOfDay != null && timeOfDay != selectedTime)
     {
       setState(() {
-        // selectedTime = timeOfDay.hour+":"+timeOfDay.minute;
-        String selectedTime = timeOfDay.hour.toString()+":"+timeOfDay.minute.toString();
-        timeController.text= selectedTime;
+        selectedTime = timeOfDay;
+        timeController.text= selectedTime.toString();
       });
     }
   }

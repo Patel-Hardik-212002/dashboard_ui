@@ -1,14 +1,16 @@
 import 'dart:convert';
 
-import 'package:dashboard_ui/toss_winner_contest/model_toss.dart';
+import 'package:dashboard_ui/model/model_match_winner.dart';
+import 'package:dashboard_ui/model/model_toss.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils.dart';
+import '../page/utils.dart';
+import '../model/model_match_winner.dart';
 
 
-class TossController extends GetxController {
+class MatchWinnerController extends GetxController {
 
   RxBool isAddVisible = false.obs;
   RxBool isUpdateVisible = false.obs;
@@ -17,21 +19,21 @@ class TossController extends GetxController {
 
 
 
-  RxList<ModelToss> arrOfTossContest = <ModelToss>[].obs;
+  RxList<ModelWinLoss> arrOfMatchWinnerContest = <ModelWinLoss>[].obs;
   int selectedContest=-1;
 
-  ModelToss? modelToss;
+  ModelWinLoss? modelWinLoss;
 
 
-  Future<void> getAllTossContest() async {
-    arrOfTossContest.clear();
+  Future<void> getAllWinLossContest() async {
+    arrOfMatchWinnerContest.clear();
     http.Response response = await http.get(Uri.parse(
-        'https://codinghouse.in/battingraja/toss/getalltosscontest?type=WEB'));
+        'https://codinghouse.in/battingraja/winloss/getallwinlosscontest?type=WEB'));
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
-      arrOfTossContest.addAll((json as List)
-          .map((e) => ModelToss.fromJson(e as Map<String, dynamic>)));
+      arrOfMatchWinnerContest.addAll((json as List)
+          .map((e) => ModelWinLoss.fromJson(e as Map<String, dynamic>)));
     }
   }
 
@@ -46,7 +48,7 @@ class TossController extends GetxController {
 
     http.Response response = await http.post(
       Uri.parse(
-          'https://codinghouse.in/battingraja/toss/createtosscontest'),
+          'https://codinghouse.in/battingraja/winloss/creatwinlosscontest'),
       body: {
         'user_id': "1",
         'match_id': matchId,
@@ -54,7 +56,9 @@ class TossController extends GetxController {
         'entry_fee': entryFee,
         'wining_amount': winningAmount,
         'description': description,
-        'inning_type': inningType,
+
+
+
       },
     );
     if (response.statusCode == 200) {
@@ -75,29 +79,32 @@ class TossController extends GetxController {
       String entryFee,
       String winningAmount,
       String description,
-  String tossResult) async {
+      String winingTeam,
+      String status
+ ) async {
     Map<String, String> result = {};
 
     http.Response response = await http.post(
       Uri.parse(
-          'https://codinghouse.in/battingraja/toss/updatetosscontest'),
+          'https://codinghouse.in/battingraja/winloss/updatewinlosscontest'),
       body: {
-        'toss_winner_contest_id': modelToss!.tossWinnerContestId.toString(),
+        'match_winner_contest_id': modelWinLoss!.matchWinnerContestId.toString(),
         'user_id': "1",
         'match_id': matchId,
         'contest_name': contestName,
         'entry_fee': entryFee,
         'wining_amount': winningAmount,
         'description': description,
-        'toss_result': tossResult,
-
+        'match_winner_contest_id': modelWinLoss!.matchWinnerContestId!.toString(),
+        'wining_team': winingTeam,
+        'status': status,
       },
     );
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       result['status'] = "1";
       result['message'] = json['message'];
-      getAllTossContest();
+      getAllWinLossContest();
       return result;
     } else {
       result['status'] = "0";
@@ -110,13 +117,14 @@ class TossController extends GetxController {
   Future<int> deleteContest(BuildContext context, String id) async {
 
     http.Response response = await http.post(
-      Uri.parse('https://codinghouse.in/battingraja/toss/deletecontest'),
-      body: {'toss_winner_contest_id': id},
+      Uri.parse('https://codinghouse.in/battingraja/winloss/deletecontest'),
+      body: {'match_winner_contest_id': id},
     );
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       showSnackBar(context, json['message']);
+      getAllWinLossContest();
       return 1;
     } else {
       showSnackBar(context, "Opps! Something went wrong");

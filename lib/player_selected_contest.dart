@@ -2,7 +2,7 @@ import 'package:dashboard_ui/last_digit_contest/page/update_ldc_contest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'last_digit_contest/page/create_ldc_contest.dart';
+import 'last_digit_contest/create_ldc_contest.dart';
 
 class PlayerSelectedContest extends StatefulWidget {
   const PlayerSelectedContest({Key? key}) : super(key: key);

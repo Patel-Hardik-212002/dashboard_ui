@@ -1,12 +1,12 @@
-import 'package:dashboard_ui/match/match_controller.dart';
-import 'package:dashboard_ui/toss_winner_contest/model_toss.dart';
-import 'package:dashboard_ui/toss_winner_contest/toss_controller.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
+import 'package:dashboard_ui/model/model_toss.dart';
+import 'package:dashboard_ui/controller/toss_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../../home.dart';
-import '../../utils.dart';
+import '../page/home.dart';
+import '../page/utils.dart';
 
 class UpdateTossContest extends StatefulWidget {
   const UpdateTossContest({Key? key}) : super(key: key);
@@ -28,6 +28,7 @@ class _UpdateTossContestState extends State<UpdateTossContest> {
   late TextEditingController contestName;
   late TextEditingController description;
   late TextEditingController tossResult;
+  late TextEditingController status;
 
   MatchController matchController = Get.find();
   TossController tossController = Get.find();
@@ -48,7 +49,9 @@ class _UpdateTossContestState extends State<UpdateTossContest> {
         text: tossController.modelToss!.tossResult.toString());
     
     textEditingControllerMatch = TextEditingController();
-
+    status =
+        TextEditingController(text: tossController.modelToss!.status.toString());
+    matchController.getAllMatch();
     matchController.getAllMatch();
   }
 
@@ -245,10 +248,26 @@ class _UpdateTossContestState extends State<UpdateTossContest> {
               height: 60,
               width: Get.width * 0.30,
               child: TextField(
+                controller: status,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter status',
+                  labelText: 'enter status',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
                 controller: tossResult,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter Score',
+                  hintText: 'Enter team name',
+
                 ),
               ),
             ),
@@ -269,6 +288,7 @@ class _UpdateTossContestState extends State<UpdateTossContest> {
                     winningAmount.text,
                     description.text,
                     tossResult.text,
+                    status.text.toString(),
                   );
                   if (result['status'] == "1") {
                     showSnackBar(context, result['message']!);

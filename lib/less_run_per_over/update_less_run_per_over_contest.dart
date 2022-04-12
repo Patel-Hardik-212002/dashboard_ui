@@ -1,11 +1,11 @@
-import 'package:dashboard_ui/less_run_per_over/less_run_per_over_controller.dart';
-import 'package:dashboard_ui/match/match_controller.dart';
+import 'package:dashboard_ui/controller/less_run_per_over_controller.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../../home.dart';
-import '../../utils.dart';
+import '../page/home.dart';
+import '../page/utils.dart';
 
 
 class UpdateLessRunPerOverContest extends StatefulWidget {
@@ -29,6 +29,7 @@ class _UpdateLessRunPerOverContestState extends State<UpdateLessRunPerOverContes
   late TextEditingController description;
   late TextEditingController overScore;
   late TextEditingController winningOver;
+  late TextEditingController status;
 
   late TextEditingController textEditingControllerInningType;
 
@@ -60,7 +61,8 @@ class _UpdateLessRunPerOverContestState extends State<UpdateLessRunPerOverContes
         text: lessRunPerOverController.modelOver!.winningOver.toString());
 
 
-
+    status =
+        TextEditingController(text: lessRunPerOverController.modelOver!.status.toString());
 
 
     matchController.getAllMatch();
@@ -259,6 +261,28 @@ class _UpdateLessRunPerOverContestState extends State<UpdateLessRunPerOverContes
               height: 60,
               width: Get.width * 0.30,
               child: TextField(
+                maxLength: 1,
+                controller: status,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter status',
+                    labelText: 'update status'),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 60,
+              width: Get.width * 0.30,
+              child: TextField(
+                maxLength: 4,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 controller: overScore,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -273,6 +297,10 @@ class _UpdateLessRunPerOverContestState extends State<UpdateLessRunPerOverContes
               height: 60,
               width: Get.width * 0.30,
               child: TextField(
+                maxLength: 4,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 controller: winningOver,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -299,6 +327,7 @@ class _UpdateLessRunPerOverContestState extends State<UpdateLessRunPerOverContes
                     textEditingControllerInningType.text,
                     winningOver.text,
                     overScore.text    ,
+                          status.text.toString(),
 
                   );
                   if (result['status'] == "1") {

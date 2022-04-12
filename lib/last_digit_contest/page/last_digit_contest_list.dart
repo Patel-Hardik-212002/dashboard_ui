@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:dashboard_ui/last_digit_contest/controller/ldc_controller.dart';
+import 'package:dashboard_ui/controller/ldc_controller.dart';
 import 'package:dashboard_ui/last_digit_contest/page/update_ldc_contest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../utils.dart';
-import 'create_ldc_contest.dart';
+import '../../page/utils.dart';
+import '../create_ldc_contest.dart';
 import 'ldc_result.dart';
 
 class LastDigitWinningContest extends StatefulWidget {
@@ -70,19 +70,19 @@ class _LastDigitWinningContestState extends State<LastDigitWinningContest> {
                                               Text("Match Type".toUpperCase())),
                                       DataColumn(
                                           label: Text(
-                                              "Contest Name".toUpperCase())),
+                                              "Contest\nName".toUpperCase())),
                                       DataColumn(
                                           label:
-                                              Text("Entry Fee".toUpperCase())),
+                                              Text("Entry\nFee".toUpperCase())),
                                       DataColumn(
                                           label: Text(
-                                              "Winning Amount".toUpperCase())),
+                                              "Winning\nAmount".toUpperCase())),
                                       DataColumn(
                                           label:
                                               Text("No Of Join".toUpperCase())),
                                       DataColumn(
                                           label: Text(
-                                              "Available Slot".toUpperCase())),
+                                              "Available\nSlot".toUpperCase())),
                                       DataColumn(
                                           label: Text("Status".toUpperCase())),
                                       DataColumn(
@@ -140,33 +140,70 @@ class _LastDigitWinningContestState extends State<LastDigitWinningContest> {
                                                     .length
                                                     .toString()))
                                             .toString())),
+                                        // DataCell(Text(
+                                        //   (ldcController.arrOfLDC[index]
+                                        //                   .inningScore ==
+                                        //               null
+                                        //           ? "Upcoming"
+                                        //           : ldcController
+                                        //                       .arrOfLDC[index]
+                                        //                       .inningScore ==
+                                        //                   "0"
+                                        //               ? "Upcoming"
+                                        //               : "Completed")
+                                        //       .toString()
+                                        //       .toUpperCase(),
+                                        //   style: TextStyle(
+                                        //       color: ldcController
+                                        //                   .arrOfLDC[index]
+                                        //                   .inningScore ==
+                                        //               null
+                                        //           ? Colors.green
+                                        //           : ldcController
+                                        //                       .arrOfLDC[index]
+                                        //                       .inningScore ==
+                                        //                   "0"
+                                        //               ? Colors.green
+                                        //               : Colors.red),
+                                        // )),
                                         DataCell(Text(
-                                          (ldcController.arrOfLDC[index]
-                                                          .inningScore ==
-                                                      null
-                                                  ? "Upcoming"
-                                                  : ldcController
-                                                              .arrOfLDC[index]
-                                                              .inningScore ==
-                                                          "0"
-                                                      ? "Upcoming"
-                                                      : "Completed")
-                                              .toString()
-                                              .toUpperCase(),
+                                          ldcController
+                                              .arrOfLDC[
+                                          index]
+                                              .status ==
+                                              "1"
+                                              ? "Upcoming"
+                                              : ldcController
+                                              .arrOfLDC[
+                                          index]
+                                              .status ==
+                                              "2"
+                                              ? "Ongoing"
+                                              : ldcController
+                                              .arrOfLDC[
+                                          index]
+                                              .status ==
+                                              "3"?"Completed":"Cancel"
+                                          ,
                                           style: TextStyle(
                                               color: ldcController
-                                                          .arrOfLDC[index]
-                                                          .inningScore ==
-                                                      null
+                                                  .arrOfLDC[
+                                              index]
+                                                  .status ==
+                                                  "1"
+                                                  ? Colors.black
+                                                  : ldcController
+                                                  .arrOfLDC[
+                                              index]
+                                                  .status ==
+                                                  "2"
                                                   ? Colors.green
                                                   : ldcController
-                                                              .arrOfLDC[index]
-                                                              .inningScore ==
-                                                          "0"
-                                                      ? Colors.green
-                                                      : Colors.red),
+                                                  .arrOfLDC[
+                                              index]
+                                                  .status ==
+                                                  "3"?Colors.grey:Colors.red),
                                         )),
-
                                         DataCell(Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,

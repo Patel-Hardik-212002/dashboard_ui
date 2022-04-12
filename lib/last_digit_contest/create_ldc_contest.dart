@@ -1,7 +1,7 @@
-import 'package:dashboard_ui/home.dart';
-import 'package:dashboard_ui/last_digit_contest/controller/ldc_controller.dart';
-import 'package:dashboard_ui/match/match_controller.dart';
-import 'package:dashboard_ui/utils.dart';
+import 'package:dashboard_ui/page/home.dart';
+import 'package:dashboard_ui/controller/ldc_controller.dart';
+import 'package:dashboard_ui/controller/match_controller.dart';
+import 'package:dashboard_ui/page/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -115,7 +115,7 @@ class _CreateContestState extends State<CreateContest> {
                                   matchController.arrOfMatch[index].matchId!;
                               textEditingControllerMatch.text =
                                   matchController.arrOfMatch[index].team1! +
-                                      " v/s " +
+                                      " v/s " +""+
                                       matchController.arrOfMatch[index].team2!;
 
                               isMatchVisible = false;
