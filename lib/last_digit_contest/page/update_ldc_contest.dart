@@ -260,6 +260,7 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
                 ],
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
+
                     hintText: 'Enter status',
                     labelText: 'update status'),
               ),
