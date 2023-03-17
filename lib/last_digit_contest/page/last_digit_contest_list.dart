@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 import '../../page/utils.dart';
 import '../create_ldc_contest.dart';
-import 'ldc_result.dart';
+import 'ldc_preview.dart';
 
 class LastDigitWinningContest extends StatefulWidget {
   const LastDigitWinningContest({Key? key}) : super(key: key);

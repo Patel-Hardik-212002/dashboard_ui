@@ -14,18 +14,21 @@ class ModelDashboard {
     this.toss,
     this.lrpo,
     this.match,
+    this.profit,
   });
 
   int? ldc;
   int? toss;
   int? lrpo;
   int? match;
+  int? profit;
 
   factory ModelDashboard.fromJson(Map<String, dynamic> json) => ModelDashboard(
     ldc: json["ldc"],
     toss: json["toss"],
     lrpo: json["lrpo"],
     match: json["match"],
+    profit: json["profit"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,5 +36,6 @@ class ModelDashboard {
     "toss": toss,
     "lrpo": lrpo,
     "match": match,
+    "profit":profit,
   };
 }

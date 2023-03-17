@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../last_digit_contest/create_ldc_contest.dart';
-import '../last_digit_contest/page/ldc_result.dart';
+import '../last_digit_contest/page/ldc_preview.dart';
 import '../page/utils.dart';
 import 'create_toss_contest.dart';
 

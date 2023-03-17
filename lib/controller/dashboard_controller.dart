@@ -12,6 +12,7 @@ class DashboardController extends GetxController {
   RxString totalLdc = "".obs;
   RxString totalToss = "".obs;
   RxString totalOver="".obs;
+  RxString totalProfit="".obs;
   RxString totalMatchWinner="".obs;
 
 
@@ -26,6 +27,7 @@ class DashboardController extends GetxController {
       totalLdc.value = json['ldc'].toString();
       totalToss.value = json['toss'].toString();
       totalOver.value = json['lrpo'].toString();
+      totalProfit.value = json['profit'].toString();
       totalMatchWinner.value = json['match'].toString();
     } else {
       isLoading.value = false;

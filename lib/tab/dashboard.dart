@@ -1,5 +1,10 @@
+import 'package:dashboard_ui/add_banner/profit_list.dart';
 import 'package:dashboard_ui/controller/dashboard_controller.dart';
 import 'package:dashboard_ui/controller/ldc_controller.dart';
+import 'package:dashboard_ui/last_digit_contest/page/last_digit_contest_list.dart';
+import 'package:dashboard_ui/last_digit_contest/page/last_digit_contest_list.dart';
+import 'package:dashboard_ui/last_digit_contest/page/last_digit_contest_list.dart';
+import 'package:dashboard_ui/last_digit_contest/page/last_digit_contest_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -41,6 +46,7 @@ class _DashboardState extends State<Dashboard> {
                 child: InkWell(
 
                   onTap: (){
+                       // Get.off(LastDigitWinningContest());
 
                   },
                   child: Column(
@@ -125,6 +131,31 @@ class _DashboardState extends State<Dashboard> {
                       Text(dashboardController.totalMatchWinner.value.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
                       SizedBox(height: 10,),
                       Text("Match Winner Contest".toUpperCase())
+                    ],
+                  ),
+                ),
+              )),
+              Expanded(child: Container(
+                margin: EdgeInsets.all(16),
+                constraints: BoxConstraints(
+                    minHeight: 150,
+                    minWidth: 100
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey,width: 1),
+                    borderRadius: BorderRadius.circular(12)
+                ),
+                child: InkWell(
+                  onTap: (){
+                    // Get.off(Profit());
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                       Text(dashboardController.totalProfit.value.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
+                       SizedBox(height: 10,),
+                      Text("admin profit".toUpperCase())
                     ],
                   ),
                 ),

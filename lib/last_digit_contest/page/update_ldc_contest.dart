@@ -261,7 +261,7 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
 
-                    hintText: 'Enter status',
+                    hintText: 'Enter status 1.Upcoming 2.Live 3.Complete',
                     labelText: 'update status'),
               ),
             ),
@@ -301,7 +301,7 @@ class _UpdateLDContestState extends State<UpdateLDContest> {
                     description.text,
                     textEditingControllerInningType.text,
                     inningScore.text,
-                    minimumUser.toString(),
+                    minimumUser.text.toString(),
                     status.text.toString(),
                   );
                   if (result['status'] == "1") {
